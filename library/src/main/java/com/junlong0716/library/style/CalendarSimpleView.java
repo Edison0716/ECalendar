@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -17,9 +18,6 @@ import com.junlong0716.library.CalendarRangeView;
  * @CreateDate: 2020/3/8 4:24 PM
  */
 public class CalendarSimpleView extends CalendarRangeView {
-
-    int i = 0;
-
     public CalendarSimpleView(Context context) {
         this(context, null);
     }
@@ -40,6 +38,11 @@ public class CalendarSimpleView extends CalendarRangeView {
         float baselineY = mTextBaseLine + y;
         int cx = x + mItemWidth / 2;
 
-        canvas.drawText(String.valueOf(item.getDay()), cx, baselineY, currentMonthTextPaint);
+        if (item == null) {
+            canvas.drawText("", cx, baselineY, currentMonthTextPaint);
+        } else {
+            canvas.drawText(String.valueOf(item.getDay()), cx, baselineY, currentMonthTextPaint);
+        }
+
     }
 }

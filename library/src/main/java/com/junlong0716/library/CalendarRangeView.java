@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
  * @Author: LiJunlong
  * @CreateDate: 2020/3/7 6:56 PM
  */
-public abstract class CalendarRangeView extends CalendarBaseView{
+public abstract class CalendarRangeView extends CalendarBaseView implements ICalendarView{
 
     public CalendarRangeView(Context context) {
         this(context, null);
@@ -81,6 +81,4 @@ public abstract class CalendarRangeView extends CalendarBaseView{
         drawText(canvas, item, x, y,mCurrentMonthTextPaint);
     }
 
-
-    public abstract void drawText(Canvas canvas, Calendar item, int x, int y, Paint currentMonthTextPaint);
 }

@@ -23,13 +23,13 @@ public class MainActivity extends AppCompatActivity {
         List<Calendar> dates = new ArrayList<>();
 
 
-        for (int i = 0; i < CalendarUtil.getMonthDaysCount(2020, java.util.Calendar.FEBRUARY); i++) {
+        for (int i = 0; i < CalendarUtil.getMonthDaysCount(2020, java.util.Calendar.APRIL); i++) {
             Calendar calendar = new Calendar();
             calendar.setDay(i + 1);
             dates.add(calendar);
         }
 
 
-        simpleView.setDate(2020, java.util.Calendar.FEBRUARY, dates);
+        simpleView.setDate(2020, java.util.Calendar.APRIL, dates);
     }
 }

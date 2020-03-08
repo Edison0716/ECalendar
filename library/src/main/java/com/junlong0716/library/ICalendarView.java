@@ -10,7 +10,7 @@ import android.graphics.Paint;
  * @CreateDate: 2020/3/7 6:02 PM
  */
 public interface ICalendarView {
-//
+    //
 //    /**
 //     * 绘制当前月份的文字颜色
 //     * @param colorRes 颜色资源
@@ -29,5 +29,5 @@ public interface ICalendarView {
 //     */
 //    boolean isHaveDateDes();
 
-
+    void drawText(Canvas canvas, Calendar item, int x, int y, Paint currentMonthTextPaint);
 }

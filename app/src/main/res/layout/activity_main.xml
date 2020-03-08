@@ -8,7 +8,8 @@
     tools:context=".MainActivity">
 
    <com.junlong0716.library.style.CalendarSimpleView
+       android:id="@+id/simpleView"
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"/>
+       android:layout_height="wrap_content" />
 
 </LinearLayout>

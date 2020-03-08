@@ -1,6 +1,7 @@
 package com.junlong0716.library;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 /**
  * @ClassName: IBaseView
@@ -28,5 +29,5 @@ public interface ICalendarView {
 //     */
 //    boolean isHaveDateDes();
 
-    void drawText(Canvas canvas, Calendar item, int x, int y);
+
 }

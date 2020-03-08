@@ -5,13 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * @ClassName: CalendarBaseView
@@ -32,13 +32,14 @@ public abstract class CalendarBaseView extends View {
     // 每一项日期的宽度 高度
     protected int mItemWidth;
     protected int mItemHeight;
-
-    // 一个月份总共的行数  不是6行 就是7行 因为有日期偏移格子
+    // 一个月份总共的行数  不是5行 就是6行 因为有日期偏移格子
     protected int mLineCount;
-
     // 设置当前日历显示的年 月
     protected int mYear;
     protected int mMonth;
+    // 从周几开始计算起始点
+    protected int mWeekStart = java.util.Calendar.SUNDAY;
+
 
     public CalendarBaseView(Context context) {
         this(context, null);
@@ -63,10 +64,13 @@ public abstract class CalendarBaseView extends View {
     }
 
 
-    public void setDate(int year, int month) {
-
+    public void setDate(int year, int month, List<Calendar> items) {
+        mYear = year;
+        mMonth = month;
+        mItems.clear();
+        mItems.addAll(items);
+        invalidate();
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {

@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * @ClassName: CalendarBaseView
  * @Description:
@@ -20,6 +19,7 @@ import java.util.List;
  * @CreateDate: 2020/3/8 10:41 AM
  */
 public abstract class CalendarBaseView extends View {
+
     // 默认颜色值
     public static final int DEFAULT_TEXT_SIZE = 14;
     // 当前月份的画笔
@@ -31,6 +31,7 @@ public abstract class CalendarBaseView extends View {
 
     // 每一项日期的宽度 高度
     protected int mItemWidth;
+    // 默认 高度 等于 宽度 一个正方形
     protected int mItemHeight;
     // 一个月份总共的行数  不是5行 就是6行 因为有日期偏移格子
     protected int mLineCount;
@@ -39,7 +40,6 @@ public abstract class CalendarBaseView extends View {
     protected int mMonth;
     // 从周几开始计算起始点
     protected int mWeekStart = java.util.Calendar.SUNDAY;
-
 
     public CalendarBaseView(Context context) {
         this(context, null);
@@ -52,7 +52,6 @@ public abstract class CalendarBaseView extends View {
     public CalendarBaseView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initPaint(context);
-
     }
 
     private void initPaint(Context context) {
@@ -63,13 +62,21 @@ public abstract class CalendarBaseView extends View {
         mCurrentMonthTextPaint.setColor(Color.BLACK);
     }
 
-
     public void setDate(int year, int month, List<Calendar> items) {
         mYear = year;
         mMonth = month;
         mItems.clear();
         mItems.addAll(items);
         invalidate();
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        // 计算一个格子的宽度
+        mItemWidth = (getWidth() - getPaddingLeft() - getPaddingRight()) / 7;
+        // 这里设置高度与宽度相等
+        mItemHeight = mItemWidth;
     }
 
     @Override

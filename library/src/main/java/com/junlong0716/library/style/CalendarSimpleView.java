@@ -18,6 +18,7 @@ import com.junlong0716.library.CalendarRangeView;
  * @CreateDate: 2020/3/8 4:24 PM
  */
 public class CalendarSimpleView extends CalendarRangeView {
+
     public CalendarSimpleView(Context context) {
         this(context, null);
     }
@@ -36,13 +37,18 @@ public class CalendarSimpleView extends CalendarRangeView {
         int mTextBaseLine = (int) (mItemHeight / 2 - metrics.descent + (metrics.bottom - metrics.top) / 2);
 
         float baselineY = mTextBaseLine + y;
-        int cx = x + mItemWidth / 2;
+        int centerX = x + mItemWidth / 2;
 
-        if (item == null) {
-            canvas.drawText("", cx, baselineY, currentMonthTextPaint);
-        } else {
-            canvas.drawText(String.valueOf(item.getDay()), cx, baselineY, currentMonthTextPaint);
-        }
+        canvas.drawText(String.valueOf(item.getDay()), centerX, baselineY, currentMonthTextPaint);
+    }
+
+    @Override
+    public void onActionDown(float x, float y) {
+
+    }
+
+    @Override
+    public void onActionUp(float x, float y) {
 
     }
 }

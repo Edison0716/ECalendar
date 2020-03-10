@@ -52,8 +52,6 @@ public abstract class CalendarBaseView extends View {
     protected int mMonthDaysCount;
     // 一共有多少个格子  不是35个  就是 42 个
     protected int mTotalBlocksInMonth;
-    // 绘制基本文字图形 状态 目的减少绘制步骤
-    private boolean mIsDrawBasicMonthTextFinished = false;
 
     public CalendarBaseView(Context context) {
         this(context, null);
@@ -118,7 +116,8 @@ public abstract class CalendarBaseView extends View {
         // 偏移量 该月上一个月分的结束的位置
         // 如果是一月份 则 找上一年的12月份
         if (mMonth == java.util.Calendar.JANUARY) {
-            mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear - 1, java.util.Calendar.DECEMBER, mWeekStart);
+            mDayOfMonthStartOffset = CalendarUtil
+                    .getDayOfMonthStartOffset(mYear - 1, java.util.Calendar.DECEMBER, mWeekStart);
         } else {
             mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear, mMonth - 1, mWeekStart);
         }
@@ -138,17 +137,13 @@ public abstract class CalendarBaseView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mIsDrawBasicMonthTextFinished = false;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         // 绘制基础文字
-        if (!mIsDrawBasicMonthTextFinished) {
-            drawCalendarDate(canvas);
-            mIsDrawBasicMonthTextFinished = true;
-        }
+        drawCalendarDate(canvas);
     }
 
     abstract void drawCalendarDate(Canvas canvas);

@@ -29,19 +29,7 @@ public interface ICalendarView {
 //     */
 //    boolean isHaveDateDes();
 
-    void drawText(Canvas canvas, Calendar item, int x, int y, Paint currentMonthTextPaint);
+    void drawDayText(Canvas canvas, Calendar item, int x, int y, Paint currentMonthTextPaint);
 
-    /**
-     * 手指按下
-     * @param x
-     * @param y
-     */
-    void onActionDown(float x, float y);
-
-    /**
-     * 手指抬起
-     * @param x
-     * @param y
-     */
-    void onActionUp(float x, float y);
+    void drawDaySelected(Canvas canvas, Calendar item, int x, int y);
 }

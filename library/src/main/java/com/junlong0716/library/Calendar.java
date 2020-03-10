@@ -21,6 +21,25 @@ public class Calendar implements Serializable {
     private String des;
     // 是否是可用的
     private boolean isAvailable;
+    // 绘制时的坐标
+    private int locationX;
+    private int locationY;
+
+    public int getLocationX() {
+        return locationX;
+    }
+
+    public void setLocationX(int locationX) {
+        this.locationX = locationX;
+    }
+
+    public int getLocationY() {
+        return locationY;
+    }
+
+    public void setLocationY(int locationY) {
+        this.locationY = locationY;
+    }
 
     public int getYear() {
         return year;

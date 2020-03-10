@@ -11,6 +11,7 @@ import java.util.Calendar;
  * @CreateDate: 2020/3/7 6:13 PM
  */
 public class CalendarUtil {
+
     /**
      * dp转px
      *
@@ -23,7 +24,6 @@ public class CalendarUtil {
         return (int) (dpValue * scale + 0.5f);
     }
 
-
     /**
      * 获取最大行数
      *
@@ -33,11 +33,32 @@ public class CalendarUtil {
      */
     static int getMaxLines(int dayOfMonthStartOffset, int totalDaysInMonth) {
         //判断最大行数
-        if (dayOfMonthStartOffset == 2 && totalDaysInMonth == 31)
+        if (dayOfMonthStartOffset == 2 && totalDaysInMonth == 31) {
             return 6;
-        else if (dayOfMonthStartOffset == 1 && totalDaysInMonth >= 30)
+        } else if (dayOfMonthStartOffset == 1 && totalDaysInMonth >= 30) {
             return 6;
-        else return 5;
+        } else {
+            return 5;
+        }
+    }
+
+    /**
+     * 计算一共需要绘制多少个格子 算上空格
+     * @param dayOfMonthStartOffset 1号开始的偏移量 从序号1开始计算
+     * @param totalDaysInMonth 一个月有多少天
+     * @return 格子个数
+     */
+    public static int getTotalBlockInMonth(int dayOfMonthStartOffset, int totalDaysInMonth) {
+        return getMaxLines(dayOfMonthStartOffset, totalDaysInMonth) * 7;
+    }
+
+    /**
+     * 计算一共需要绘制多少个格子 算上空格
+     * @param maxLines 行数
+     * @return 格子个数
+     */
+    public static int getTotalBlockInMonth(int maxLines) {
+        return maxLines * 7;
     }
 
     /**
@@ -51,7 +72,6 @@ public class CalendarUtil {
         return getDayOfMonthStartOffset(year, month, getMonthDaysCount(year, month), weekStart);
     }
 
-
     public static int getDayOfMonthStartOffset(int year, int month, int date, int weekStart) {
         int week = getWeekFormCalendar(year, month, date);
         if (weekStart == Calendar.SUNDAY) {
@@ -62,7 +82,6 @@ public class CalendarUtil {
         }
         return week == 7 ? 6 : 7 - week - 1;
     }
-
 
     /**
      * 获取今天是星期几
@@ -94,7 +113,8 @@ public class CalendarUtil {
         }
 
         //判断小月
-        if (month == Calendar.APRIL || month == Calendar.JUNE || month == Calendar.SEPTEMBER || month == Calendar.NOVEMBER) {
+        if (month == Calendar.APRIL || month == Calendar.JUNE || month == Calendar.SEPTEMBER
+                || month == Calendar.NOVEMBER) {
             count = 30;
         }
 
@@ -109,7 +129,6 @@ public class CalendarUtil {
         return count;
     }
 
-
     /**
      * 是否是闰年
      *
@@ -118,5 +137,13 @@ public class CalendarUtil {
      */
     static boolean isLeapYear(int year) {
         return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+    }
+
+    /**
+     * 判断月份是不是当前月份
+     * @param month 月份
+     */
+    static boolean isCurrentMonth(int month) {
+        return Calendar.getInstance().get(Calendar.MONTH) == month;
     }
 }

@@ -4,10 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
-
 import androidx.annotation.Nullable;
-
 import com.junlong0716.library.Calendar;
 import com.junlong0716.library.CalendarRangeView;
 
@@ -32,7 +29,7 @@ public class CalendarSimpleView extends CalendarRangeView {
     }
 
     @Override
-    public void drawText(Canvas canvas, Calendar item, int x, int y, Paint currentMonthTextPaint) {
+    public void drawDayText(Canvas canvas, Calendar item, int x, int y, Paint currentMonthTextPaint) {
         Paint.FontMetrics metrics = currentMonthTextPaint.getFontMetrics();
         int mTextBaseLine = (int) (mItemHeight / 2 - metrics.descent + (metrics.bottom - metrics.top) / 2);
 
@@ -43,12 +40,7 @@ public class CalendarSimpleView extends CalendarRangeView {
     }
 
     @Override
-    public void onActionDown(float x, float y) {
-
-    }
-
-    @Override
-    public void onActionUp(float x, float y) {
+    public void drawDaySelected(Canvas canvas, Calendar item, int x, int y) {
 
     }
 }

@@ -32,4 +32,6 @@ public interface ICalendarView {
     void drawDayText(Canvas canvas, Calendar item, int x, int y, Paint currentMonthTextPaint);
 
     void drawDaySelected(Canvas canvas, Calendar item, int x, int y);
+
+
 }

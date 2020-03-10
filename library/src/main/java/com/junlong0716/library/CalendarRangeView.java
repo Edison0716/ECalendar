@@ -16,8 +16,7 @@ import androidx.annotation.Nullable;
  * @CreateDate: 2020/3/7 6:56 PM
  */
 public abstract class CalendarRangeView extends CalendarBaseView implements ICalendarView {
-
-    private Calendar mFirstClickDate, mSecondClickDate;
+    private int mCheckedDay;
 
     public CalendarRangeView(Context context) {
         this(context, null);
@@ -68,13 +67,18 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             performClick();
-            // EdisonLi TODO 2020/3/9 按下时的效果
+            // EdisonLi 2020/3/9 按下时的效果
             onActionDown(event.getX(), event.getY());
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            // EdisonLi TODO 2020/3/9 抬起时的效果
-            onActionUp(event.getX(), event.getY());
+            // EdisonLi 2020/3/9 抬起时的效果
+            boolean isChecked = onActionUp(event.getX(), event.getY());
+            if (isChecked) {
+                if (mOnCheckedListener != null){
+                    mOnCheckedListener.onDaySelectedListener(mYear, mMonth, mCheckedDay);
+                }
+            }
+            return isChecked;
         }
-
         return true;
     }
 
@@ -88,26 +92,27 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
     }
 
     public void onActionDown(float x, float y) {
-        calculateDateByLocation(x, y);
+        mCheckedDay = calculateDateByLocation(x, y);
     }
 
-    private void calculateDateByLocation(float x, float y) {
+    private int calculateDateByLocation(float x, float y) {
         int indexCol = (int) ((x - getPaddingLeft()) / mItemWidth);
         int indexRow = (int) ((y - getPaddingTop()) / mItemHeight);
 
         Log.d("INDEX_COL", indexCol + "");
         Log.d("INDEX_ROW", indexRow + "");
-        if (indexCol < DAYS_COUNT_IN_WEEK - mDayOfMonthStartOffset + 1 && indexRow == 0){
-            // 点击的时偏移量的格子
-        }else {
+        if (indexCol < DAYS_COUNT_IN_WEEK - mDayOfMonthStartOffset + 1 && indexRow == 0) {
+            // 点击的时偏移量的格子 do nothing
+        } else {
             int checkedDate = indexCol + indexRow * DAYS_COUNT_IN_WEEK - (DAYS_COUNT_IN_WEEK - mDayOfMonthStartOffset);
-            if (checkedDate <= mMonthDaysCount ){
-                Toast.makeText(getContext(), checkedDate + "", Toast.LENGTH_SHORT).show();
+            if (checkedDate <= mMonthDaysCount) {
+                return checkedDate;
             }
         }
+        return -1;
     }
 
-    public void onActionUp(float x, float y) {
-
+    public boolean onActionUp(float x, float y) {
+        return calculateDateByLocation(x, y) == mCheckedDay;
     }
 }

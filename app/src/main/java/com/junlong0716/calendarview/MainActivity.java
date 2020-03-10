@@ -1,10 +1,12 @@
 package com.junlong0716.calendarview;
 
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
 import com.junlong0716.library.Calendar;
+import com.junlong0716.library.CalendarBaseView.OnCheckedListener;
 import com.junlong0716.library.CalendarUtil;
 import com.junlong0716.library.style.CalendarSimpleView;
 
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         CalendarSimpleView simpleView = findViewById(R.id.simpleView);
 
-        List<Calendar> dates = new ArrayList<>();
+        final List<Calendar> dates = new ArrayList<>();
 
         for (int i = 0; i < CalendarUtil.getMonthDaysCount(2020, java.util.Calendar.JANUARY); i++) {
             Calendar calendar = new Calendar();
@@ -29,5 +31,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         simpleView.setDate(2020, java.util.Calendar.JANUARY, dates);
+
+        simpleView.setOnCheckedListener(new OnCheckedListener() {
+            @Override
+            public void onDaySelectedListener(int year, int month, int checkedDay) {
+                Toast.makeText(MainActivity.this, year + "-" + month + 1 + "-" + checkedDay, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

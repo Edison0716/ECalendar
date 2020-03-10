@@ -53,6 +53,9 @@ public abstract class CalendarBaseView extends View {
     // 一共有多少个格子  不是35个  就是 42 个
     protected int mTotalBlocksInMonth;
 
+    @Nullable
+    protected OnCheckedListener mOnCheckedListener;
+
     public CalendarBaseView(Context context) {
         this(context, null);
     }
@@ -147,4 +150,14 @@ public abstract class CalendarBaseView extends View {
     }
 
     abstract void drawCalendarDate(Canvas canvas);
+
+
+    public void setOnCheckedListener(@Nullable OnCheckedListener onCheckedListener){
+        mOnCheckedListener = onCheckedListener;
+    }
+
+    public interface OnCheckedListener {
+
+        void onDaySelectedListener(int year, int month, int checkedDay);
+    }
 }

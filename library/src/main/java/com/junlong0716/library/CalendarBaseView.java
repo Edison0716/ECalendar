@@ -5,13 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,13 +25,15 @@ public abstract class CalendarBaseView extends View {
     // 默认颜色值
     public static final int DEFAULT_TEXT_SIZE = 14;
     // 当前月份的画笔
-    protected final Paint mUnSelectedDateTextPaint = new Paint();
+    protected final Paint mUnselectedDateTextPaint = new Paint();
     // 选中的日期画笔
     protected final Paint mSelectedDateTextPaint = new Paint();
+    // 不可用的日期画笔
+    protected final Paint mUnavailableDateTextPaint = new Paint();
     // 不是当月的画笔
     protected final Paint mOtherMonthTextPaint = new Paint();
     // 日历数据
-    protected final List<Calendar> mItems = new ArrayList<>(31);
+    protected final List<? super BaseCalendarEntity> mItems = new ArrayList<>(31);
     // 每一项日期的宽度 高度
     protected int mItemWidth;
     // 默认 高度 等于 宽度 一个正方形
@@ -72,11 +73,11 @@ public abstract class CalendarBaseView extends View {
     // 初始化 画笔
     private void initPaint(Context context) {
 
-        mUnSelectedDateTextPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
-        mUnSelectedDateTextPaint.setAntiAlias(true);
-        mUnSelectedDateTextPaint.setTextAlign(Paint.Align.CENTER);
-        mUnSelectedDateTextPaint.setFakeBoldText(true);
-        mUnSelectedDateTextPaint.setColor(Color.BLACK);
+        mUnselectedDateTextPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
+        mUnselectedDateTextPaint.setAntiAlias(true);
+        mUnselectedDateTextPaint.setTextAlign(Paint.Align.CENTER);
+        mUnselectedDateTextPaint.setFakeBoldText(true);
+        mUnselectedDateTextPaint.setColor(Color.parseColor("#333333"));
 
         mSelectedDateTextPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
         mSelectedDateTextPaint.setAntiAlias(true);
@@ -89,14 +90,43 @@ public abstract class CalendarBaseView extends View {
         mOtherMonthTextPaint.setTextAlign(Paint.Align.CENTER);
         mOtherMonthTextPaint.setFakeBoldText(true);
         mOtherMonthTextPaint.setColor(Color.BLACK);
+
+        mUnavailableDateTextPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
+        mUnavailableDateTextPaint.setAntiAlias(true);
+        mUnavailableDateTextPaint.setTextAlign(Paint.Align.CENTER);
+        mUnavailableDateTextPaint.setFakeBoldText(true);
+        mUnavailableDateTextPaint.setColor(Color.parseColor("#999999"));
     }
 
-    public void setDate(int year, int month, List<Calendar> items) {
+    public void setDate(@NonNull List<? extends BaseCalendarEntity> items) {
+        if (items.isEmpty()) {
+            return;
+        }
+
+        int year = items.get(0).getYear();
+        int month = items.get(0).getMonth();
+
         mIsCurrentMonth = CalendarUtil.isCurrentMonth(month);
+
         mYear = year;
         mMonth = month;
+
         mItems.clear();
         mItems.addAll(items);
+
+        requestLayout();
+    }
+
+    /**
+     * 设置数据
+     * @param year 年
+     * @param month 月
+     */
+    public void setDate(int year, int month, Class clazz) {
+        mYear = year;
+        mMonth = month;
+        CalendarUtil.createDate(mYear, mMonth, mItems, clazz);
+        mIsCurrentMonth = CalendarUtil.isCurrentMonth(mMonth);
         requestLayout();
     }
 
@@ -151,13 +181,12 @@ public abstract class CalendarBaseView extends View {
 
     abstract void drawCalendarDate(Canvas canvas);
 
-
-    public void setOnCheckedListener(@Nullable OnCheckedListener onCheckedListener){
+    public void setOnCheckedListener(@Nullable OnCheckedListener onCheckedListener) {
         mOnCheckedListener = onCheckedListener;
     }
 
     public interface OnCheckedListener {
 
-        void onDaySelectedListener(int year, int month, int checkedDay);
+        void onDaySelectedListener(BaseCalendarEntity item);
     }
 }

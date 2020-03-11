@@ -2,7 +2,11 @@ package com.junlong0716.library;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import static com.junlong0716.library.CalendarRangeView.RANGE_CALENDAR_CLASS_NAME;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * @ClassName: CalendarUtil
@@ -11,6 +15,8 @@ import java.util.Calendar;
  * @CreateDate: 2020/3/7 6:13 PM
  */
 public class CalendarUtil {
+
+    static final Calendar CALENDAR = Calendar.getInstance();
 
     /**
      * dp转px
@@ -92,9 +98,8 @@ public class CalendarUtil {
      * @return 星期
      */
     public static int getWeekFormCalendar(int year, int month, int date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, date);
-        return calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        CALENDAR.set(year, month, date);
+        return CALENDAR.get(Calendar.DAY_OF_WEEK) - 1;
     }
 
     /**
@@ -144,6 +149,82 @@ public class CalendarUtil {
      * @param month 月份
      */
     static boolean isCurrentMonth(int month) {
-        return Calendar.getInstance().get(Calendar.MONTH) == month;
+        return CALENDAR.get(Calendar.MONTH) == month;
+    }
+
+    static boolean isToday(int year, int month, int day) {
+        return CALENDAR.get(Calendar.YEAR) == year && CALENDAR.get(Calendar.MONTH) == month
+                && CALENDAR.get(Calendar.DATE) == day;
+    }
+
+    static boolean isPass(int year, int month, int day) {
+        if (year < CALENDAR.get(Calendar.YEAR)) {
+            return true;
+        } else if (year > CALENDAR.get(Calendar.YEAR)) {
+            return false;
+        } else if (month < CALENDAR.get(Calendar.MONTH)) {
+            return true;
+        } else if (month > CALENDAR.get(Calendar.MONTH)) {
+            return false;
+        } else {
+            return day < CALENDAR.get(Calendar.DATE);
+        }
+    }
+
+
+    static List<? super BaseCalendarEntity> createDate(int year, int month, @NonNull List<? super BaseCalendarEntity> items, @NonNull Class clazz) {
+        items.clear();
+        if (checkInvalidateMonth(month)) {
+            throw new IllegalArgumentException("非法月份!");
+        }
+        for (int i = 0; i < CalendarUtil.getMonthDaysCount(year, month); i++) {
+            while (clazz != null) {
+                if (clazz.getName().equals(RANGE_CALENDAR_CLASS_NAME)) {
+                    RangeCalendarEntity rangeCalendarEntity = new RangeCalendarEntity(year, month, i + 1);
+                    items.add(rangeCalendarEntity);
+                    break;
+                } else {
+                    clazz = clazz.getSuperclass();
+                }
+            }
+        }
+        return items;
+    }
+
+    static List<? extends BaseCalendarEntity> checkedRangeStartDate(int day,
+            @NonNull List<? extends BaseCalendarEntity> items) {
+        for (Object item : items) {
+            if (item instanceof RangeCalendarEntity) {
+                if (((RangeCalendarEntity) item).getDay() == day) {
+                    ((RangeCalendarEntity) item).setStartCheckedDay(true);
+                } else {
+                    ((RangeCalendarEntity) item).setStartCheckedDay(false);
+                }
+            }
+        }
+        return items;
+    }
+
+    static List<? extends BaseCalendarEntity> checkedRangeEndDate(int day,
+            @NonNull List<? extends BaseCalendarEntity> items) {
+        for (Object item : items) {
+            if (item instanceof RangeCalendarEntity) {
+                if (((RangeCalendarEntity) item).getDay() == day) {
+                    ((RangeCalendarEntity) item).setEndCheckedDay(true);
+                } else {
+                    ((RangeCalendarEntity) item).setEndCheckedDay(false);
+                }
+            }
+        }
+        return items;
+    }
+
+    /**
+     * 是否是非法月份
+     * @param m 月份 使用Calendar 包的
+     * @return 结果
+     */
+    static boolean checkInvalidateMonth(int m) {
+        return m < 0 || m >= 12;
     }
 }

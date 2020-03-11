@@ -3,10 +3,7 @@ package com.junlong0716.library;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-
-import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 /**
@@ -16,6 +13,9 @@ import androidx.annotation.Nullable;
  * @CreateDate: 2020/3/7 6:56 PM
  */
 public abstract class CalendarRangeView extends CalendarBaseView implements ICalendarView {
+
+    public static final String RANGE_CALENDAR_CLASS_NAME = CalendarRangeView.class.getName();
+
     private int mCheckedDay;
 
     public CalendarRangeView(Context context) {
@@ -56,7 +56,8 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
                 }
 
                 // 绘制单元块
-                drawSingleItem(canvas, mItems.get(indexItem), lineIndex, rowIndex);
+                drawSingleItem(canvas, (RangeCalendarEntity) mItems.get(indexItem), lineIndex, rowIndex);
+
                 ++indexItem;
                 ++index;
             }
@@ -73,22 +74,32 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
             // EdisonLi 2020/3/9 抬起时的效果
             boolean isChecked = onActionUp(event.getX(), event.getY());
             if (isChecked) {
-                if (mOnCheckedListener != null){
-                    mOnCheckedListener.onDaySelectedListener(mYear, mMonth, mCheckedDay);
-                }
+                handleClick();
             }
             return isChecked;
         }
         return true;
     }
 
-    private void drawSingleItem(Canvas canvas, Calendar item, int lineIndex, int rowIndex) {
+    private void handleClick() {
+        if (mOnCheckedListener != null) {
+            for (Object item : mItems) {
+                if (item instanceof RangeCalendarEntity) {
+                    if (((RangeCalendarEntity) item).getDay() == mCheckedDay) {
+                        mOnCheckedListener.onDaySelectedListener((RangeCalendarEntity) item);
+                    }
+                }
+            }
+        }
+    }
+
+    private void drawSingleItem(Canvas canvas, RangeCalendarEntity item, int lineIndex, int rowIndex) {
         // 格子左上角的横坐标
         int x = rowIndex * mItemWidth;
         int y = lineIndex * mItemHeight;
         item.setLocationX(x);
         item.setLocationY(y);
-        drawDayText(canvas, item, x, y, mUnSelectedDateTextPaint);
+        drawDayText(canvas, item, x, y);
     }
 
     public void onActionDown(float x, float y) {
@@ -98,9 +109,6 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
     private int calculateDateByLocation(float x, float y) {
         int indexCol = (int) ((x - getPaddingLeft()) / mItemWidth);
         int indexRow = (int) ((y - getPaddingTop()) / mItemHeight);
-
-        Log.d("INDEX_COL", indexCol + "");
-        Log.d("INDEX_ROW", indexRow + "");
         if (indexCol < DAYS_COUNT_IN_WEEK - mDayOfMonthStartOffset + 1 && indexRow == 0) {
             // 点击的时偏移量的格子 do nothing
         } else {
@@ -113,6 +121,6 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
     }
 
     public boolean onActionUp(float x, float y) {
-        return calculateDateByLocation(x, y) == mCheckedDay;
+        return calculateDateByLocation(x, y) != -1 && calculateDateByLocation(x, y) == mCheckedDay;
     }
 }

@@ -1,7 +1,6 @@
 package com.junlong0716.library;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 /**
  * @ClassName: IBaseView
@@ -29,9 +28,9 @@ public interface ICalendarView {
 //     */
 //    boolean isHaveDateDes();
 
-    void drawDayText(Canvas canvas, Calendar item, int x, int y, Paint currentMonthTextPaint);
+    void drawDayText(Canvas canvas, RangeCalendarEntity item, int x, int y);
 
-    void drawDaySelected(Canvas canvas, Calendar item, int x, int y);
+    void drawDaySelected(Canvas canvas, RangeCalendarEntity item, int x, int y);
 
 
 }

@@ -28,9 +28,9 @@ public interface ICalendarView {
 //     */
 //    boolean isHaveDateDes();
 
-    void drawDayText(Canvas canvas, RangeCalendarEntity item, int x, int y);
+    void drawDayText(Canvas canvas, RangeCalendarEntity item);
 
-    void drawDaySelected(Canvas canvas, RangeCalendarEntity item, int x, int y);
+    void drawDaySelected(Canvas canvas, RangeCalendarEntity item);
 
 
 }

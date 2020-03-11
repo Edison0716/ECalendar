@@ -23,13 +23,15 @@ public abstract class CalendarBaseView extends View {
 
     public static final int DAYS_COUNT_IN_WEEK = 7;
     // 默认颜色值
-    public static final int DEFAULT_TEXT_SIZE = 14;
+    public static final int DEFAULT_TEXT_SIZE = 16;
     // 当前月份的画笔
     protected final Paint mUnselectedDateTextPaint = new Paint();
     // 选中的日期画笔
     protected final Paint mSelectedDateTextPaint = new Paint();
     // 不可用的日期画笔
     protected final Paint mUnavailableDateTextPaint = new Paint();
+    // 选中的背景样式画笔
+    protected  final Paint mSelectedDateBgPaint = new Paint();
     // 不是当月的画笔
     protected final Paint mOtherMonthTextPaint = new Paint();
     // 日历数据
@@ -76,26 +78,28 @@ public abstract class CalendarBaseView extends View {
         mUnselectedDateTextPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
         mUnselectedDateTextPaint.setAntiAlias(true);
         mUnselectedDateTextPaint.setTextAlign(Paint.Align.CENTER);
-        mUnselectedDateTextPaint.setFakeBoldText(true);
         mUnselectedDateTextPaint.setColor(Color.parseColor("#333333"));
 
         mSelectedDateTextPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
         mSelectedDateTextPaint.setAntiAlias(true);
         mSelectedDateTextPaint.setTextAlign(Paint.Align.CENTER);
-        mSelectedDateTextPaint.setFakeBoldText(true);
-        mSelectedDateTextPaint.setColor(Color.BLACK);
+        mSelectedDateTextPaint.setColor(Color.WHITE);
 
         mOtherMonthTextPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
         mOtherMonthTextPaint.setAntiAlias(true);
         mOtherMonthTextPaint.setTextAlign(Paint.Align.CENTER);
-        mOtherMonthTextPaint.setFakeBoldText(true);
         mOtherMonthTextPaint.setColor(Color.BLACK);
 
         mUnavailableDateTextPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
         mUnavailableDateTextPaint.setAntiAlias(true);
         mUnavailableDateTextPaint.setTextAlign(Paint.Align.CENTER);
-        mUnavailableDateTextPaint.setFakeBoldText(true);
         mUnavailableDateTextPaint.setColor(Color.parseColor("#999999"));
+
+
+        mSelectedDateBgPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
+        mSelectedDateBgPaint.setAntiAlias(true);
+        mSelectedDateBgPaint.setTextAlign(Paint.Align.CENTER);
+        mSelectedDateBgPaint.setColor(Color.parseColor("#29B7B7"));
     }
 
     public void setDate(@NonNull List<? extends BaseCalendarEntity> items) {
@@ -128,6 +132,14 @@ public abstract class CalendarBaseView extends View {
         CalendarUtil.createDate(mYear, mMonth, mItems, clazz);
         mIsCurrentMonth = CalendarUtil.isCurrentMonth(mMonth);
         requestLayout();
+    }
+
+    /**
+     * 获取日期数据
+     */
+    @Nullable
+    public List<? super BaseCalendarEntity> getDate(){
+        return mItems;
     }
 
     @Override

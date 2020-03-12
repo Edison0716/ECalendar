@@ -101,8 +101,7 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
                 if (item instanceof RangeCalendarEntity) {
                     if (((RangeCalendarEntity) item).getDay() == mCheckedDay) {
                         if (((RangeCalendarEntity) item).isAvailable()) {
-                            RangeCalendarViewDelegate.handleClick((RangeCalendarEntity) item,mItems);
-                            RangeCalendarViewDelegate.handleRange((RangeCalendarEntity) item, mItems);
+                            RangeCalendarViewDelegate.handleClick((RangeCalendarEntity) item, mItems);
                             mOnCheckedListener.onDaySelectedListener((RangeCalendarEntity) item);
                         }
                         invalidate();

@@ -4,9 +4,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.junlong0716.library.BaseCalendarEntity;
 import com.junlong0716.library.CalendarBaseView.OnCheckedListener;
-import com.junlong0716.library.RangeCalendarEntity;
-import com.junlong0716.library.RangeCalendarViewDelegate;
-import com.junlong0716.library.style.CalendarRangeStyleView;
+import com.junlong0716.library.style.EHiCalendarRangeStyleView;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final CalendarRangeStyleView calendarRangeStyleView = findViewById(R.id.simpleView);
+        final EHiCalendarRangeStyleView calendarRangeStyleView = findViewById(R.id.simpleView);
 
         calendarRangeStyleView.setDate(2020, Calendar.MARCH, calendarRangeStyleView.getClass());
 

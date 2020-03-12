@@ -38,9 +38,9 @@ public class CalendarUtil {
      */
     static int getMaxLines(int dayOfMonthStartOffset, int totalDaysInMonth) {
         //判断最大行数
-        if (dayOfMonthStartOffset == 2 && totalDaysInMonth == 31) {
+        if ((7 - dayOfMonthStartOffset) == 2 && totalDaysInMonth == 31) {
             return 6;
-        } else if (dayOfMonthStartOffset == 1 && totalDaysInMonth >= 30) {
+        } else if ((7 - dayOfMonthStartOffset) == 1 && totalDaysInMonth >= 30) {
             return 6;
         } else {
             return 5;

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,8 @@ public abstract class CalendarBaseView extends View {
     protected  final Paint mSelectedDateBgPaint = new Paint();
     // 不是当月的画笔
     protected final Paint mOtherMonthTextPaint = new Paint();
+    // 日期描述的画笔
+    protected final Paint mDesTextPaint = new Paint();
     // 日历数据
     protected final List<? super BaseCalendarEntity> mItems = new ArrayList<>(31);
     // 每一项日期的宽度 高度
@@ -100,6 +103,13 @@ public abstract class CalendarBaseView extends View {
         mSelectedDateBgPaint.setAntiAlias(true);
         mSelectedDateBgPaint.setTextAlign(Paint.Align.CENTER);
         mSelectedDateBgPaint.setColor(Color.parseColor("#29B7B7"));
+
+
+        mDesTextPaint.setTextSize(CalendarUtil.dipToPx(context, 12));
+        mDesTextPaint.setAntiAlias(true);
+        mDesTextPaint.setTextAlign(Paint.Align.CENTER);
+        mDesTextPaint.setColor(Color.parseColor("#666666"));
+
     }
 
     public void setDate(@NonNull List<? extends BaseCalendarEntity> items) {
@@ -148,6 +158,7 @@ public abstract class CalendarBaseView extends View {
         if (heightMode == MeasureSpec.AT_MOST) {
             calculateOffset();
             int realHeight = getPaddingTop() + getPaddingBottom() + mLineCount * mItemHeight;
+            Log.d("LINE-COUNT",mLineCount+"");
             setMeasuredDimension(widthMeasureSpec, MeasureSpec.makeMeasureSpec(realHeight, MeasureSpec.AT_MOST));
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -173,7 +184,7 @@ public abstract class CalendarBaseView extends View {
         mItemWidth = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight()) / 7;
         // 这里设置高度与宽度相等
         if (mItemHeight <= 0) {
-            mItemHeight = mItemWidth;
+            mItemHeight = CalendarUtil.dipToPx(getContext(),60);
         } else {
             // EdisonLi TODO 2020/3/10 自定义Item高度
         }

@@ -1,10 +1,11 @@
 package com.junlong0716.library;
 
+import androidx.annotation.NonNull;
 import java.util.List;
 
 /**
  * @ClassName: CalendarViewDelegate
- * @Description:
+ * @Description: 处理多选的所有逻辑操作
  * @Author: LiJunlong
  * @CreateDate: 2020/3/8 10:38 AM
  */
@@ -46,10 +47,12 @@ public final class RangeCalendarViewDelegate {
             // 继续走一遍
             handleClick(clickEntity, dates);
         }
+
+        handleRange(clickEntity,dates);
     }
 
     // 重置操作
-    private static void resetDate(RangeCalendarEntity clickEntity, List<? super BaseCalendarEntity> dates) {
+    private static void resetDate(@NonNull RangeCalendarEntity clickEntity, @NonNull List<? super BaseCalendarEntity> dates) {
         clickEntity.setStartCheckedDay(false);
         clickEntity.setEndCheckedDay(false);
         FIRST_CLICK = false;
@@ -67,7 +70,7 @@ public final class RangeCalendarViewDelegate {
     }
 
     // 标记区间的
-    public static void handleRange(RangeCalendarEntity item, List<? super BaseCalendarEntity> dates) {
+    private static void handleRange(RangeCalendarEntity item, List<? super BaseCalendarEntity> dates) {
         // 如果是第二次点击 并且 第二次点击的日期与第一次点击的日期不是同一个日期 则 不进行标记区间
         if (RangeCalendarViewDelegate.SECOND_CLICK && item != RangeCalendarViewDelegate.FIRST_CLICK_CALENDAR_ENTITY) {
             for (Object date : dates) {

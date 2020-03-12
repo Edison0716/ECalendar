@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 import com.junlong0716.library.CalendarUtil;
@@ -12,22 +13,22 @@ import com.junlong0716.library.RangeCalendarEntity;
 import com.junlong0716.library.CalendarRangeView;
 
 /**
- * @ClassName: CalendarSimpleView
+ * @ClassName: EHiCalendarRangeStyleView
  * @Description:
  * @Author: LiJunlong
  * @CreateDate: 2020/3/8 4:24 PM
  */
-public class CalendarRangeStyleView extends CalendarRangeView {
+public class EHiCalendarRangeStyleView extends CalendarRangeView {
 
-    public CalendarRangeStyleView(Context context) {
+    public EHiCalendarRangeStyleView(Context context) {
         this(context, null);
     }
 
-    public CalendarRangeStyleView(Context context, @Nullable AttributeSet attrs) {
+    public EHiCalendarRangeStyleView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CalendarRangeStyleView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EHiCalendarRangeStyleView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -42,20 +43,37 @@ public class CalendarRangeStyleView extends CalendarRangeView {
         // 是否起始时选中的样式
         // 是否是终止选中的样式
         if (item.isStartCheckedDay() || item.isEndCheckedDay()) {
-            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY,
-                    mSelectedDateTextPaint);
+            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY, mSelectedDateTextPaint);
         }
 
         // 不可用状态 包括 时间已经过去 还有 当天不能用
         else if (!item.isAvailable()) {
-            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY,
-                    mUnavailableDateTextPaint);
+            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY, mUnavailableDateTextPaint);
         }
 
         // 普通未选中的样式
         else {
-            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY,
-                    mUnselectedDateTextPaint);
+            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY, mUnselectedDateTextPaint);
+        }
+
+        // 文字与上部分的圆的距离
+        int marginTop = 10;
+        // 圆距离顶部的距离
+        int paddingTop = (mItemHeight - CalendarUtil.dipToPx(getContext(), 32)) / 2;
+        int desPointY = mItemHeight  + item.getLocationY();
+        // 绘制描述文字
+        if (!TextUtils.isEmpty(item.getDes()) && !item.isStartCheckedDay() && !item.isEndCheckedDay()){
+            canvas.drawText(item.getDes(), centerX, desPointY, mDesTextPaint);
+        }
+        // 是取车
+        else if (item.isStartCheckedDay() && item.isEndCheckedDay()){
+            canvas.drawText("取/还车", centerX, desPointY, mDesTextPaint);
+        }
+        else if (item.isStartCheckedDay()){
+            canvas.drawText("取车", centerX, desPointY, mDesTextPaint);
+        }
+        else if (item.isEndCheckedDay()){
+            canvas.drawText("还车", centerX, desPointY, mDesTextPaint);
         }
     }
 
@@ -94,7 +112,11 @@ public class CalendarRangeStyleView extends CalendarRangeView {
             }
 
             mSelectedDateBgPaint.setColor(Color.parseColor("#CCEEEE"));
-            canvas.drawRect(rect, mSelectedDateBgPaint);
+
+            if (item.isEndCheckedDay() || (item.isStartCheckedDay() && item.isRangedCheckedDay())){
+                canvas.drawRect(rect, mSelectedDateBgPaint);
+            }
+
             drawCircle(item, canvas);
         } else {
             drawCircle(item, canvas);

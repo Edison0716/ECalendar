@@ -1,11 +1,10 @@
 package com.junlong0716.library;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import static com.junlong0716.library.CalendarRangeView.RANGE_CALENDAR_CLASS_NAME;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ import java.util.List;
  */
 public class CalendarUtil {
 
-    static final Calendar CALENDAR = Calendar.getInstance();
+    private static final Calendar CALENDAR = Calendar.getInstance();
 
     /**
      * dp转px
@@ -171,8 +170,28 @@ public class CalendarUtil {
         }
     }
 
+    /**
+     * 比较日期大小
+     * @param reference 基准日期
+     * @param compared 被比较日期
+     * @return 被比较日期 是不是在 基准日期 之前
+     */
+    static boolean isPass(BaseCalendarEntity reference, BaseCalendarEntity compared) {
+        Calendar referenceC = Calendar.getInstance();
+        referenceC.set(Calendar.YEAR, reference.getYear());
+        referenceC.set(Calendar.MONTH, reference.getMonth());
+        referenceC.set(Calendar.DATE, reference.getDay());
 
-    static List<? super BaseCalendarEntity> createDate(int year, int month, @NonNull List<? super BaseCalendarEntity> items, @NonNull Class clazz) {
+        Calendar comparedC = Calendar.getInstance();
+        comparedC.set(Calendar.YEAR, compared.getYear());
+        comparedC.set(Calendar.MONTH, compared.getMonth());
+        comparedC.set(Calendar.DATE, compared.getDay());
+
+        return referenceC.getTime().getTime() > comparedC.getTime().getTime();
+    }
+
+    static List<? super BaseCalendarEntity> createDate(int year, int month,
+            @NonNull List<? super BaseCalendarEntity> items, @NonNull Class clazz) {
         items.clear();
         if (checkInvalidateMonth(month)) {
             throw new IllegalArgumentException("非法月份!");

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.junlong0716.library.BaseCalendarEntity;
 import com.junlong0716.library.CalendarBaseView.OnCheckedListener;
 import com.junlong0716.library.RangeCalendarEntity;
+import com.junlong0716.library.RangeCalendarViewDelegate;
 import com.junlong0716.library.style.CalendarRangeStyleView;
 import java.util.Calendar;
 
@@ -22,9 +23,7 @@ public class MainActivity extends AppCompatActivity {
         calendarRangeStyleView.setOnCheckedListener(new OnCheckedListener() {
             @Override
             public void onDaySelectedListener(BaseCalendarEntity item) {
-                if (item instanceof RangeCalendarEntity) {
-                    ((RangeCalendarEntity) item).setStartCheckedDay(true);
-                }
+
             }
         });
     }

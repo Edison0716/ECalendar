@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 /**
@@ -101,7 +100,9 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
             for (Object item : mItems) {
                 if (item instanceof RangeCalendarEntity) {
                     if (((RangeCalendarEntity) item).getDay() == mCheckedDay) {
-                        if (((RangeCalendarEntity) item).isAvailable()){
+                        if (((RangeCalendarEntity) item).isAvailable()) {
+                            RangeCalendarViewDelegate.handleClick((RangeCalendarEntity) item,mItems);
+                            RangeCalendarViewDelegate.handleRange((RangeCalendarEntity) item, mItems);
                             mOnCheckedListener.onDaySelectedListener((RangeCalendarEntity) item);
                         }
                         invalidate();
@@ -121,17 +122,16 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
         int indexCol = (int) ((x - getPaddingLeft()) / mItemWidth);
         int indexRow = (int) ((y - getPaddingTop()) / mItemHeight);
 
-        if (mDayOfMonthStartOffset  <= 1){
+        if (mDayOfMonthStartOffset <= 1) {
             // 没有偏移量
             int checkedDate = indexCol + indexRow * DAYS_COUNT_IN_WEEK + 1;
             if (checkedDate <= mMonthDaysCount) {
                 return checkedDate;
             }
-
-        }else if (indexCol < DAYS_COUNT_IN_WEEK - mDayOfMonthStartOffset + 1 && indexRow == 0){
+        } else if (indexCol < DAYS_COUNT_IN_WEEK - mDayOfMonthStartOffset + 1 && indexRow == 0) {
             // 点击的时偏移量的格子 do nothing
 
-        }else {
+        } else {
             // 有偏移量 要减去偏移量
             int checkedDate = indexCol + indexRow * DAYS_COUNT_IN_WEEK - (DAYS_COUNT_IN_WEEK - mDayOfMonthStartOffset);
             if (checkedDate <= mMonthDaysCount) {

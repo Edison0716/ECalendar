@@ -65,7 +65,7 @@ public class CalendarRangeStyleView extends CalendarRangeView {
 
     @Override
     public void drawDaySelected(Canvas canvas, RangeCalendarEntity item) {
-        if (item.isRangedCheckedDay()) {
+        if (item.isRangedCheckedDay() && !item.isStartCheckedDay()) {
             // 为了与圆相切割
             int a = (mItemHeight - CalendarUtil.dipToPx(getContext(), 32)) / 2;
             // 画矩形阴影
@@ -79,26 +79,25 @@ public class CalendarRangeStyleView extends CalendarRangeView {
 
             Rect rect = null;
 
-            if (item.isStartCheckedDay()){
+            if (item.isStartCheckedDay()) {
                 // 画矩形阴影
-                rect = new Rect(item.getLocationX()+ (mItemWidth / 2), item.getLocationY() + a, item.getLocationX() + mItemWidth,
+                rect = new Rect(item.getLocationX() + (mItemWidth / 2), item.getLocationY() + a,
+                        item.getLocationX() + mItemWidth,
                         item.getLocationY() + mItemHeight - a);
-
-            } else if (item.isEndCheckedDay()){
+            } else if (item.isEndCheckedDay()) {
                 rect = new Rect(item.getLocationX(), item.getLocationY() + a, item.getLocationX() + (mItemWidth / 2),
                         item.getLocationY() + mItemHeight - a);
             }
 
-            if (rect == null){
+            if (rect == null) {
                 return;
             }
 
             mSelectedDateBgPaint.setColor(Color.parseColor("#CCEEEE"));
             canvas.drawRect(rect, mSelectedDateBgPaint);
-            drawCircle(item,canvas);
-
+            drawCircle(item, canvas);
         } else {
-            drawCircle(item,canvas);
+            drawCircle(item, canvas);
         }
     }
 

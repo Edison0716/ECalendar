@@ -21,7 +21,7 @@ public class ExampleUnitTest {
 
     @Test
     public void monthOffSetTest() {
-        int monthEndDiff = CalendarUtil.getDayOfMonthStartOffset(2020, Calendar.MARCH,3,Calendar.SUNDAY);
+        int monthEndDiff = CalendarUtil.getDayOfMonthStartOffset(2020, Calendar.JANUARY,Calendar.SUNDAY);
         System.out.println(monthEndDiff);
     }
 }

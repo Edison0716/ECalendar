@@ -158,7 +158,6 @@ public abstract class CalendarBaseView extends View {
         if (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED) {
             calculateOffset();
             int realHeight = getPaddingTop() + getPaddingBottom() + mLineCount * mItemHeight;
-            Log.d("LINE-COUNT",mLineCount+"");
             setMeasuredDimension(widthMeasureSpec, MeasureSpec.makeMeasureSpec(realHeight, MeasureSpec.AT_MOST));
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -170,13 +169,7 @@ public abstract class CalendarBaseView extends View {
      */
     public void calculateOffset() {
         // 偏移量 该月上一个月分的结束的位置
-        // 如果是一月份 则 找上一年的12月份
-        if (mMonth == java.util.Calendar.JANUARY) {
-            mDayOfMonthStartOffset = CalendarUtil
-                    .getDayOfMonthStartOffset(mYear - 1, java.util.Calendar.DECEMBER, mWeekStart);
-        } else {
-            mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear, mMonth - 1, mWeekStart);
-        }
+        mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear, mMonth, mWeekStart);
         mMonthDaysCount = CalendarUtil.getMonthDaysCount(mYear, mMonth);
         mLineCount = CalendarUtil.getMaxLines(mDayOfMonthStartOffset, mMonthDaysCount);
         Log.d("LINE_COUNT",mLineCount+"");

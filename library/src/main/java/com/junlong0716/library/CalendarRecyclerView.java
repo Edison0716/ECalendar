@@ -2,29 +2,32 @@ package com.junlong0716.library;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.icu.util.Calendar;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.junlong0716.library.style.EHiCalendarRangeStyleView;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author 35068 EdisonLi <a href="junlong.li@1hai.cn">Contact me.</a>
  * @version 1.0
  * @since 2020/03/12 16:19
- * desc : 
+ * desc :
  */
 public class CalendarRecyclerView extends RecyclerView {
 
-    private final List<Integer> mYearMonthList = new ArrayList<>(12);
+    private CalendarAdapter mCalendarAdapter;
 
     public CalendarRecyclerView(@NonNull Context context) {
         this(context, null);
@@ -42,15 +45,25 @@ public class CalendarRecyclerView extends RecyclerView {
     private void initView() {
         setBackgroundColor(Color.WHITE);
         setLayoutManager(new LinearLayoutManager(getContext()));
-        setAdapter(new CalendarAdapter(getContext()));
+        mCalendarAdapter = new CalendarAdapter(getContext());
+        List<List<RangeCalendarEntity>> dates = CalendarUtil.createDate(2020, 2, 6);
+        setAdapter(mCalendarAdapter);
+        RangeCalendarViewDelegate.setDates(dates);
+        mCalendarAdapter.setData(dates);
     }
 
     private static class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapterHolder> {
-
+        private final List<List<RangeCalendarEntity>> mYearMonthList = new ArrayList<>(12);
         private Context mContext;
 
         CalendarAdapter(Context context) {
             mContext = context;
+        }
+
+        public void setData(List<List<RangeCalendarEntity>> yearMonthList) {
+            mYearMonthList.clear();
+            mYearMonthList.addAll(yearMonthList);
+            notifyDataSetChanged();
         }
 
         @NonNull
@@ -62,13 +75,19 @@ public class CalendarRecyclerView extends RecyclerView {
 
         @Override
         public void onBindViewHolder(@NonNull CalendarAdapterHolder holder, int position) {
-            Log.d("H", "ok");
-            holder.mEHiCalendarRangeStyleView.setDate(2020, 3, holder.mEHiCalendarRangeStyleView.getClass());
+            holder.mEHiCalendarRangeStyleView.setDate(mYearMonthList.get(position));
+
+            holder.mEHiCalendarRangeStyleView.setOnCheckedListener(new CalendarBaseView.OnCheckedListener() {
+                @Override
+                public void onDaySelectedListener(BaseCalendarEntity item) {
+                    notifyDataSetChanged();
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
-            return 12;
+            return mYearMonthList.size();
         }
     }
 

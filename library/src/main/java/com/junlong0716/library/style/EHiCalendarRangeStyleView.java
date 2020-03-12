@@ -12,6 +12,8 @@ import com.junlong0716.library.CalendarUtil;
 import com.junlong0716.library.RangeCalendarEntity;
 import com.junlong0716.library.CalendarRangeView;
 
+import java.util.Calendar;
+
 /**
  * @ClassName: EHiCalendarRangeStyleView
  * @Description:
@@ -85,12 +87,19 @@ public class EHiCalendarRangeStyleView extends CalendarRangeView {
     public void drawDaySelected(Canvas canvas, RangeCalendarEntity item) {
         // 绘制范围内
         if (item.isRangedCheckedDay() && !item.isStartCheckedDay()) {
-            int a = (mItemHeight - CalendarUtil.dipToPx(getContext(), 32)) / 2;
-            // 画矩形阴影
-            Rect rect = new Rect(item.getLocationX(), item.getLocationY() + a, item.getLocationX() + mItemWidth,
-                    item.getLocationY() + mItemHeight - a);
-            mSelectedDateBgPaint.setColor(Color.parseColor("#CCEEEE"));
-            canvas.drawRect(rect, mSelectedDateBgPaint);
+
+            if (CalendarUtil.getMonthDaysCount(item.getYear(),item.getMonth()) == item.getDay()){
+
+
+
+            }else {
+                int a = (mItemHeight - CalendarUtil.dipToPx(getContext(), 32)) / 2;
+                // 画矩形阴影
+                Rect rect = new Rect(item.getLocationX(), item.getLocationY() + a, item.getLocationX() + mItemWidth,
+                        item.getLocationY() + mItemHeight - a);
+                mSelectedDateBgPaint.setColor(Color.parseColor("#CCEEEE"));
+                canvas.drawRect(rect, mSelectedDateBgPaint);
+            }
         }
         // 绘制 起始点 终点
         else if (!(item.isStartCheckedDay() & item.isEndCheckedDay())) {

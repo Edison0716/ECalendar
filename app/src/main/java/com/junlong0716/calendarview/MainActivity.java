@@ -28,18 +28,18 @@ public class MainActivity extends AppCompatActivity implements EHiCalendarRangeS
 //
 //            }
 //        });
-
-        final LinearLayout linearLayout = findViewById(R.id.container);
-
-        for (int i = 0; i < 7; i++) {
-            LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            EHiCalendarRangeStyleView eHiCalendarRangeStyleView = new EHiCalendarRangeStyleView(this);
-            eHiCalendarRangeStyleView.setLayoutParams(layoutParams);
-            eHiCalendarRangeStyleView.setDate(2020, 4, eHiCalendarRangeStyleView.getClass());
-            eHiCalendarRangeStyleView.setOnCheckedListener(this);
-            linearLayout.addView(eHiCalendarRangeStyleView);
-        }
+//
+//        final LinearLayout linearLayout = findViewById(R.id.container);
+//
+//        for (int i = 0; i < 11; i++) {
+//            LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.WRAP_CONTENT);
+//            EHiCalendarRangeStyleView eHiCalendarRangeStyleView = new EHiCalendarRangeStyleView(this);
+//            eHiCalendarRangeStyleView.setLayoutParams(layoutParams);
+//            eHiCalendarRangeStyleView.setDate(2020, i, eHiCalendarRangeStyleView.getClass());
+//            eHiCalendarRangeStyleView.setOnCheckedListener(this);
+//            linearLayout.addView(eHiCalendarRangeStyleView);
+//        }
 
     }
 

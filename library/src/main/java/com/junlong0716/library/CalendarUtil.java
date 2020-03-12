@@ -2,12 +2,15 @@ package com.junlong0716.library;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
-import static com.junlong0716.library.CalendarRangeView.RANGE_CALENDAR_CLASS_NAME;
+import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+
+import static com.junlong0716.library.CalendarRangeView.RANGE_CALENDAR_CLASS_NAME;
 
 /**
  * @ClassName: CalendarUtil
@@ -40,10 +43,10 @@ public class CalendarUtil {
      */
     static int getMaxLines(int dayOfMonthStartOffset, int totalDaysInMonth) {
 
-        Log.d("dayOfMonthStartOffset",dayOfMonthStartOffset+"");
-        Log.d("dayOfMonthStartOffset1",totalDaysInMonth+"");
+        Log.d("dayOfMonthStartOffset", dayOfMonthStartOffset + "");
+        Log.d("dayOfMonthStartOffset1", totalDaysInMonth + "");
         //判断最大行数
-        if (8- dayOfMonthStartOffset == 1 && totalDaysInMonth == 31) {
+        if (8 - dayOfMonthStartOffset == 1 && totalDaysInMonth == 31) {
             return 6;
         } else if (8 - dayOfMonthStartOffset == 0 && totalDaysInMonth >= 30) {
             return 6;
@@ -54,8 +57,9 @@ public class CalendarUtil {
 
     /**
      * 计算一共需要绘制多少个格子 算上空格
+     *
      * @param dayOfMonthStartOffset 1号开始的偏移量 从序号1开始计算
-     * @param totalDaysInMonth 一个月有多少天
+     * @param totalDaysInMonth      一个月有多少天
      * @return 格子个数
      */
     public static int getTotalBlockInMonth(int dayOfMonthStartOffset, int totalDaysInMonth) {
@@ -64,6 +68,7 @@ public class CalendarUtil {
 
     /**
      * 计算一共需要绘制多少个格子 算上空格
+     *
      * @param maxLines 行数
      * @return 格子个数
      */
@@ -73,24 +78,26 @@ public class CalendarUtil {
 
     /**
      * 获取 每月 最后一天 所在的位置
+     *
      * @param year
      * @param month
      * @param weekStart
      * @return
      */
     public static int getDayOfMonthStartOffset(int year, int month, int weekStart) {
-        return getDayOfMonthStartOffset(year, month, getMonthDaysCount(year, month), weekStart);
+        return getDayOfMonthStartOffset(year, month, 1, weekStart);
     }
 
     public static int getDayOfMonthStartOffset(int year, int month, int date, int weekStart) {
         int week = getWeekFormCalendar(year, month, date);
         if (weekStart == Calendar.SUNDAY) {
-            return 7 - week;
+            return week;
         }
         if (weekStart == Calendar.MONDAY) {
-            return week == 1 ? 0 : 7 - week + 1;
+            return 6 - week;
         }
-        return week == 7 ? 6 : 7 - week - 1;
+        // 其他的不考虑了
+        return -1;
     }
 
     /**
@@ -150,6 +157,7 @@ public class CalendarUtil {
 
     /**
      * 判断月份是不是当前月份
+     *
      * @param month 月份
      */
     static boolean isCurrentMonth(int month) {
@@ -177,8 +185,9 @@ public class CalendarUtil {
 
     /**
      * 比较日期大小
+     *
      * @param reference 基准日期
-     * @param compared 被比较日期
+     * @param compared  被比较日期
      * @return 被比较日期 是不是在 基准日期 之前
      */
     static boolean isPass(BaseCalendarEntity reference, BaseCalendarEntity compared) {
@@ -196,7 +205,7 @@ public class CalendarUtil {
     }
 
     static List<? super BaseCalendarEntity> createDate(int year, int month,
-            @NonNull List<? super BaseCalendarEntity> items, @NonNull Class clazz) {
+                                                       @NonNull List<? super BaseCalendarEntity> items, @NonNull Class clazz) {
         items.clear();
         if (checkInvalidateMonth(month)) {
             throw new IllegalArgumentException("非法月份!");
@@ -206,8 +215,6 @@ public class CalendarUtil {
                 if (clazz.getName().equals(RANGE_CALENDAR_CLASS_NAME)) {
                     RangeCalendarEntity rangeCalendarEntity = new RangeCalendarEntity(year, month, i + 1);
                     items.add(rangeCalendarEntity);
-
-                    Log.d("okok","okok");
                     break;
                 } else {
                     clazz = clazz.getSuperclass();
@@ -218,7 +225,7 @@ public class CalendarUtil {
     }
 
     static List<? extends BaseCalendarEntity> checkedRangeStartDate(int day,
-            @NonNull List<? extends BaseCalendarEntity> items) {
+                                                                    @NonNull List<? extends BaseCalendarEntity> items) {
         for (Object item : items) {
             if (item instanceof RangeCalendarEntity) {
                 if (((RangeCalendarEntity) item).getDay() == day) {
@@ -232,7 +239,7 @@ public class CalendarUtil {
     }
 
     static List<? extends BaseCalendarEntity> checkedRangeEndDate(int day,
-            @NonNull List<? extends BaseCalendarEntity> items) {
+                                                                  @NonNull List<? extends BaseCalendarEntity> items) {
         for (Object item : items) {
             if (item instanceof RangeCalendarEntity) {
                 if (((RangeCalendarEntity) item).getDay() == day) {
@@ -247,10 +254,39 @@ public class CalendarUtil {
 
     /**
      * 是否是非法月份
+     *
      * @param m 月份 使用Calendar 包的
      * @return 结果
      */
     static boolean checkInvalidateMonth(int m) {
         return m < 0 || m >= 12;
+    }
+
+
+    static List<List<RangeCalendarEntity>> createDate(int year, int month, int range) {
+                List<List<RangeCalendarEntity>> createDates = new ArrayList<>();
+
+                while (range > 0) {
+                    int monthCount = getMonthDaysCount(year, month);
+                    List<RangeCalendarEntity> monthDates = new ArrayList<>(monthCount);
+
+                    for (int i = 0; i < monthCount; ++i) {
+                        monthDates.add(new RangeCalendarEntity(year, month, i + 1));
+                    }
+
+                    createDates.add(monthDates);
+
+                    // 跨年
+                    if (month == Calendar.DECEMBER){
+                        year++;
+                        month = Calendar.JANUARY;
+                    }else {
+                        month++;
+                    }
+
+                    range--;
+                }
+                return createDates;
+
     }
 }

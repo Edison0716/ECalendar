@@ -155,7 +155,7 @@ public abstract class CalendarBaseView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        if (heightMode == MeasureSpec.AT_MOST) {
+        if (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED) {
             calculateOffset();
             int realHeight = getPaddingTop() + getPaddingBottom() + mLineCount * mItemHeight;
             Log.d("LINE-COUNT",mLineCount+"");
@@ -179,6 +179,7 @@ public abstract class CalendarBaseView extends View {
         }
         mMonthDaysCount = CalendarUtil.getMonthDaysCount(mYear, mMonth);
         mLineCount = CalendarUtil.getMaxLines(mDayOfMonthStartOffset, mMonthDaysCount);
+        Log.d("LINE_COUNT",mLineCount+"");
         mTotalBlocksInMonth = CalendarUtil.getTotalBlockInMonth(mLineCount);
         // 计算一个格子的宽度
         mItemWidth = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight()) / 7;

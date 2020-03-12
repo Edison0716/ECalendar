@@ -1,6 +1,8 @@
 package com.junlong0716.library;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import static com.junlong0716.library.CalendarRangeView.RANGE_CALENDAR_CLASS_NAME;
 import java.util.Calendar;
@@ -37,10 +39,13 @@ public class CalendarUtil {
      * @return 行数
      */
     static int getMaxLines(int dayOfMonthStartOffset, int totalDaysInMonth) {
+
+        Log.d("dayOfMonthStartOffset",dayOfMonthStartOffset+"");
+        Log.d("dayOfMonthStartOffset1",totalDaysInMonth+"");
         //判断最大行数
-        if ((7 - dayOfMonthStartOffset) == 2 && totalDaysInMonth == 31) {
+        if (8- dayOfMonthStartOffset == 1 && totalDaysInMonth == 31) {
             return 6;
-        } else if ((7 - dayOfMonthStartOffset) == 1 && totalDaysInMonth >= 30) {
+        } else if (8 - dayOfMonthStartOffset == 0 && totalDaysInMonth >= 30) {
             return 6;
         } else {
             return 5;
@@ -201,6 +206,8 @@ public class CalendarUtil {
                 if (clazz.getName().equals(RANGE_CALENDAR_CLASS_NAME)) {
                     RangeCalendarEntity rangeCalendarEntity = new RangeCalendarEntity(year, month, i + 1);
                     items.add(rangeCalendarEntity);
+
+                    Log.d("okok","okok");
                     break;
                 } else {
                     clazz = clazz.getSuperclass();

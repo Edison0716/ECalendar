@@ -21,11 +21,11 @@ import com.junlong0716.library.CalendarRangeView;
 public class EHiCalendarRangeStyleView extends CalendarRangeView {
 
     public EHiCalendarRangeStyleView(Context context) {
-        this(context, null);
+        super(context);
     }
 
     public EHiCalendarRangeStyleView(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
     }
 
     public EHiCalendarRangeStyleView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -83,15 +83,17 @@ public class EHiCalendarRangeStyleView extends CalendarRangeView {
 
     @Override
     public void drawDaySelected(Canvas canvas, RangeCalendarEntity item) {
+        // 绘制范围内
         if (item.isRangedCheckedDay() && !item.isStartCheckedDay()) {
-            // 为了与圆相切割
             int a = (mItemHeight - CalendarUtil.dipToPx(getContext(), 32)) / 2;
             // 画矩形阴影
             Rect rect = new Rect(item.getLocationX(), item.getLocationY() + a, item.getLocationX() + mItemWidth,
                     item.getLocationY() + mItemHeight - a);
             mSelectedDateBgPaint.setColor(Color.parseColor("#CCEEEE"));
             canvas.drawRect(rect, mSelectedDateBgPaint);
-        } else if (!(item.isStartCheckedDay() & item.isEndCheckedDay())) {
+        }
+        // 绘制 起始点 终点
+        else if (!(item.isStartCheckedDay() & item.isEndCheckedDay())) {
             // 为了与圆相切割
             int a = (mItemHeight - CalendarUtil.dipToPx(getContext(), 32)) / 2;
 

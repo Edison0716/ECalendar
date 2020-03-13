@@ -3,8 +3,6 @@ package com.junlong0716.library;
 import java.io.Serializable;
 import java.util.Calendar;
 
-import static java.lang.reflect.Array.set;
-
 /**
  * @author 35068 EdisonLi <a href="junlong.li@1hai.cn">Contact me.</a>
  * @version 1.0

@@ -5,12 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,13 +118,12 @@ public abstract class CalendarBaseView extends View {
         int month = items.get(0).getMonth();
 
         mIsCurrentMonth = CalendarUtil.isCurrentMonth(month);
-
         mYear = year;
         mMonth = month;
-
         mItems.clear();
         mItems.addAll(items);
 
+        calculateOffset();
         requestLayout();
 
     }
@@ -142,6 +138,7 @@ public abstract class CalendarBaseView extends View {
         mMonth = month;
         CalendarUtil.createDate(mYear, mMonth, mItems, clazz);
         mIsCurrentMonth = CalendarUtil.isCurrentMonth(mMonth);
+        calculateOffset();
         requestLayout();
     }
 
@@ -157,9 +154,8 @@ public abstract class CalendarBaseView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         if (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED || heightMode == MeasureSpec.EXACTLY) {
-            calculateOffset();
             int realHeight = getPaddingTop() + getPaddingBottom() + mLineCount * mItemHeight;
-            setMeasuredDimension(widthMeasureSpec, MeasureSpec.makeMeasureSpec(realHeight, MeasureSpec.AT_MOST));
+            setMeasuredDimension(widthMeasureSpec, MeasureSpec.makeMeasureSpec(realHeight, MeasureSpec.EXACTLY));
             // 计算一个格子的宽度
             mItemWidth = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight()) / 7;
         }
@@ -175,16 +171,15 @@ public abstract class CalendarBaseView extends View {
         } else {
             // EdisonLi TODO 2020/3/10 自定义Item高度
         }
-        mLineCount = CalendarUtil.getMaxLines(mDayOfMonthStartOffset, mMonthDaysCount);
-        // 偏移量 该月上一个月分的结束的位置
-        mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear, mMonth, mWeekStart);
-        mMonthDaysCount = CalendarUtil.getMonthDaysCount(mYear, mMonth);
-        mTotalBlocksInMonth = CalendarUtil.getTotalBlockInMonth(mLineCount);
-    }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+        mMonthDaysCount = CalendarUtil.getMonthDaysCount(mYear, mMonth);
+
+        // 偏移量
+        mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear, mMonth, mWeekStart);
+        mLineCount = CalendarUtil.getMaxLines(mDayOfMonthStartOffset, mMonthDaysCount);
+
+
+        mTotalBlocksInMonth = CalendarUtil.getTotalBlockInMonth(mLineCount);
     }
 
     @Override
@@ -194,7 +189,7 @@ public abstract class CalendarBaseView extends View {
         drawCalendarDate(canvas);
     }
 
-    abstract void drawCalendarDate(Canvas canvas);
+    protected abstract void drawCalendarDate(Canvas canvas);
 
     public void setOnCheckedListener(@Nullable OnCheckedListener onCheckedListener) {
         mOnCheckedListener = onCheckedListener;

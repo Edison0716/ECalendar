@@ -1,16 +1,11 @@
 package com.junlong0716.library;
 
 import android.content.Context;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
+import static com.junlong0716.library.CalendarRangeView.RANGE_CALENDAR_CLASS_NAME;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import static com.junlong0716.library.CalendarRangeView.RANGE_CALENDAR_CLASS_NAME;
 
 /**
  * @ClassName: CalendarUtil
@@ -202,7 +197,7 @@ public class CalendarUtil {
     }
 
     static List<? super BaseCalendarEntity> createDate(int year, int month,
-                                                       @NonNull List<? super BaseCalendarEntity> items, @NonNull Class clazz) {
+            @NonNull List<? super BaseCalendarEntity> items, @NonNull Class clazz) {
         items.clear();
         if (checkInvalidateMonth(month)) {
             throw new IllegalArgumentException("非法月份!");
@@ -222,7 +217,7 @@ public class CalendarUtil {
     }
 
     static List<? extends BaseCalendarEntity> checkedRangeStartDate(int day,
-                                                                    @NonNull List<? extends BaseCalendarEntity> items) {
+            @NonNull List<? extends BaseCalendarEntity> items) {
         for (Object item : items) {
             if (item instanceof RangeCalendarEntity) {
                 if (((RangeCalendarEntity) item).getDay() == day) {
@@ -236,7 +231,7 @@ public class CalendarUtil {
     }
 
     static List<? extends BaseCalendarEntity> checkedRangeEndDate(int day,
-                                                                  @NonNull List<? extends BaseCalendarEntity> items) {
+            @NonNull List<? extends BaseCalendarEntity> items) {
         for (Object item : items) {
             if (item instanceof RangeCalendarEntity) {
                 if (((RangeCalendarEntity) item).getDay() == day) {
@@ -259,31 +254,30 @@ public class CalendarUtil {
         return m < 0 || m >= 12;
     }
 
-
     public static List<List<RangeCalendarEntity>> createDate(int year, int month, int range) {
-                List<List<RangeCalendarEntity>> createDates = new ArrayList<>();
+        List<List<RangeCalendarEntity>> createDates = new ArrayList<>();
 
-                while (range > 0) {
-                    int monthCount = getMonthDaysCount(year, month);
-                    List<RangeCalendarEntity> monthDates = new ArrayList<>(monthCount);
+        while (range > 0) {
+            int monthCount = getMonthDaysCount(year, month);
+            List<RangeCalendarEntity> monthDates = new ArrayList<>(monthCount);
 
-                    for (int i = 0; i < monthCount; ++i) {
-                        monthDates.add(new RangeCalendarEntity(year, month, i + 1));
-                    }
+            for (int i = 0; i < monthCount; ++i) {
+                monthDates.add(new RangeCalendarEntity(year, month, i + 1));
+            }
 
-                    createDates.add(monthDates);
+            createDates.add(monthDates);
 
-                    // 跨年
-                    if (month == Calendar.DECEMBER){
-                        year++;
-                        month = Calendar.JANUARY;
-                    }else {
-                        month++;
-                    }
+            // 跨年
+            if (month == Calendar.DECEMBER) {
+                year++;
+                month = Calendar.JANUARY;
+            } else {
+                month++;
+            }
 
-                    range--;
-                }
-                return createDates;
-
+            range--;
+        }
+        RangeCalendarViewDelegate.setDates(createDates);
+        return createDates;
     }
 }

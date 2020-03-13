@@ -1,8 +1,6 @@
 package com.junlong0716.library;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NavUtils;
-
 import java.util.List;
 
 /**
@@ -24,12 +22,9 @@ public final class RangeCalendarViewDelegate {
 
     public static List<List<RangeCalendarEntity>> DATES = null;
 
-
     public static void setDates(List<List<RangeCalendarEntity>> dates){
         DATES = dates;
     }
-
-
 
     /**
      * 处理点击事件

@@ -60,6 +60,7 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
                 int x = rowIndex * mItemWidth;
                 int y = lineIndex * mItemHeight;
 
+                Log.d("width",mItemWidth + "");
                 RangeCalendarEntity item = (RangeCalendarEntity) mItems.get(indexItem);
 
                 // 记录一下每一个item 可绘制区域

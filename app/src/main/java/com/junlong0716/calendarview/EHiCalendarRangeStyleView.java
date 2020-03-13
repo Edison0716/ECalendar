@@ -1,4 +1,4 @@
-package com.junlong0716.library.style;
+package com.junlong0716.calendarview;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -45,36 +45,37 @@ public class EHiCalendarRangeStyleView extends CalendarRangeView {
         // 是否起始时选中的样式
         // 是否是终止选中的样式
         if (item.isStartCheckedDay() || item.isEndCheckedDay()) {
-            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY, mSelectedDateTextPaint);
+            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY,
+                    mSelectedDateTextPaint);
         }
 
         // 不可用状态 包括 时间已经过去 还有 当天不能用
         else if (!item.isAvailable()) {
-            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY, mUnavailableDateTextPaint);
+            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY,
+                    mUnavailableDateTextPaint);
         }
 
         // 普通未选中的样式
         else {
-            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY, mUnselectedDateTextPaint);
+            checkToday(canvas, item.isToday(), String.valueOf(item.getDay()), centerX, baselineY,
+                    mUnselectedDateTextPaint);
         }
 
         // 文字与上部分的圆的距离
         int marginTop = 10;
         // 圆距离顶部的距离
         int paddingTop = (mItemHeight - CalendarUtil.dipToPx(getContext(), 32)) / 2;
-        int desPointY = mItemHeight  + item.getLocationY();
+        int desPointY = mItemHeight + item.getLocationY();
         // 绘制描述文字
-        if (!TextUtils.isEmpty(item.getDes()) && !item.isStartCheckedDay() && !item.isEndCheckedDay()){
+        if (!TextUtils.isEmpty(item.getDes()) && !item.isStartCheckedDay() && !item.isEndCheckedDay()) {
             canvas.drawText(item.getDes(), centerX, desPointY, mDesTextPaint);
         }
         // 是取车
-        else if (item.isStartCheckedDay() && item.isEndCheckedDay()){
+        else if (item.isStartCheckedDay() && item.isEndCheckedDay()) {
             canvas.drawText("取/还车", centerX, desPointY, mDesTextPaint);
-        }
-        else if (item.isStartCheckedDay()){
+        } else if (item.isStartCheckedDay()) {
             canvas.drawText("取车", centerX, desPointY, mDesTextPaint);
-        }
-        else if (item.isEndCheckedDay()){
+        } else if (item.isEndCheckedDay()) {
             canvas.drawText("还车", centerX, desPointY, mDesTextPaint);
         }
     }
@@ -87,11 +88,18 @@ public class EHiCalendarRangeStyleView extends CalendarRangeView {
     public void drawDaySelected(Canvas canvas, RangeCalendarEntity item) {
         // 绘制范围内
         if (item.isRangedCheckedDay() && !item.isStartCheckedDay()) {
-
-            if (CalendarUtil.getMonthDaysCount(item.getYear(),item.getMonth()) == item.getDay()){
-
-
-
+            if (CalendarUtil.getMonthDaysCount(item.getYear(), item.getMonth()) == item.getDay()) {
+                int a = (mItemHeight - CalendarUtil.dipToPx(getContext(), 32)) / 2;
+                Rect rect = new Rect(item.getLocationX(), item.getLocationY() + a, item.getLocationX() + (mItemWidth / 2), item.getLocationY() + mItemHeight - a);
+                drawCircle(item, canvas, "#CCEEEE");
+                canvas.drawRect(rect, mSelectedDateBgPaint);
+            } else if(1 == item.getDay()){
+                int a = (mItemHeight - CalendarUtil.dipToPx(getContext(), 32)) / 2;
+                Rect rect = new Rect(item.getLocationX() + (mItemWidth / 2), item.getLocationY() + a,
+                        item.getLocationX() + mItemWidth,
+                        item.getLocationY() + mItemHeight - a);
+                drawCircle(item, canvas, "#CCEEEE");
+                canvas.drawRect(rect, mSelectedDateBgPaint);
             }else {
                 int a = (mItemHeight - CalendarUtil.dipToPx(getContext(), 32)) / 2;
                 // 画矩形阴影
@@ -124,23 +132,24 @@ public class EHiCalendarRangeStyleView extends CalendarRangeView {
 
             mSelectedDateBgPaint.setColor(Color.parseColor("#CCEEEE"));
 
-            if (item.isEndCheckedDay() || (item.isStartCheckedDay() && item.isRangedCheckedDay())){
+            if (item.isEndCheckedDay() || (item.isStartCheckedDay() && item.isRangedCheckedDay())) {
                 canvas.drawRect(rect, mSelectedDateBgPaint);
             }
 
-            drawCircle(item, canvas);
+            drawCircle(item, canvas, "#29B7B7");
         } else {
-            drawCircle(item, canvas);
+            drawCircle(item, canvas, "#29B7B7");
         }
     }
 
-    private void drawCircle(RangeCalendarEntity item, Canvas canvas) {
+    private void drawCircle(RangeCalendarEntity item, Canvas canvas, String color) {
         // 选中的效果 这个为圆形
         // 计算圆心
         int rX = item.getLocationX() + mItemWidth / 2;
         int rY = item.getLocationY() + mItemHeight / 2;
         int r = CalendarUtil.dipToPx(getContext(), 16);
-        mSelectedDateBgPaint.setColor(Color.parseColor("#29B7B7"));
+        // mSelectedDateBgPaint.setColor(Color.parseColor("#29B7B7"));
+        mSelectedDateBgPaint.setColor(Color.parseColor(color));
         canvas.drawCircle(rX, rY, r, mSelectedDateBgPaint);
     }
 }

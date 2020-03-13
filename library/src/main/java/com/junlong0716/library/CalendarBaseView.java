@@ -129,6 +129,7 @@ public abstract class CalendarBaseView extends View {
         mItems.addAll(items);
 
         requestLayout();
+
     }
 
     /**
@@ -155,12 +156,12 @@ public abstract class CalendarBaseView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        if (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED) {
+        if (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED || heightMode == MeasureSpec.EXACTLY) {
             calculateOffset();
             int realHeight = getPaddingTop() + getPaddingBottom() + mLineCount * mItemHeight;
             setMeasuredDimension(widthMeasureSpec, MeasureSpec.makeMeasureSpec(realHeight, MeasureSpec.AT_MOST));
-        } else {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            // 计算一个格子的宽度
+            mItemWidth = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight()) / 7;
         }
     }
 
@@ -168,20 +169,17 @@ public abstract class CalendarBaseView extends View {
      * 计算偏移量
      */
     public void calculateOffset() {
-        // 偏移量 该月上一个月分的结束的位置
-        mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear, mMonth, mWeekStart);
-        mMonthDaysCount = CalendarUtil.getMonthDaysCount(mYear, mMonth);
-        mLineCount = CalendarUtil.getMaxLines(mDayOfMonthStartOffset, mMonthDaysCount);
-        Log.d("LINE_COUNT",mLineCount+"");
-        mTotalBlocksInMonth = CalendarUtil.getTotalBlockInMonth(mLineCount);
-        // 计算一个格子的宽度
-        mItemWidth = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight()) / 7;
         // 这里设置高度与宽度相等
         if (mItemHeight <= 0) {
             mItemHeight = CalendarUtil.dipToPx(getContext(),60);
         } else {
             // EdisonLi TODO 2020/3/10 自定义Item高度
         }
+        mLineCount = CalendarUtil.getMaxLines(mDayOfMonthStartOffset, mMonthDaysCount);
+        // 偏移量 该月上一个月分的结束的位置
+        mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear, mMonth, mWeekStart);
+        mMonthDaysCount = CalendarUtil.getMonthDaysCount(mYear, mMonth);
+        mTotalBlocksInMonth = CalendarUtil.getTotalBlockInMonth(mLineCount);
     }
 
     @Override

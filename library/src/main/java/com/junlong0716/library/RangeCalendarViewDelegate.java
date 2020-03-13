@@ -25,7 +25,7 @@ public final class RangeCalendarViewDelegate {
     public static List<List<RangeCalendarEntity>> DATES = null;
 
 
-    static void setDates(List<List<RangeCalendarEntity>> dates){
+    public static void setDates(List<List<RangeCalendarEntity>> dates){
         DATES = dates;
     }
 

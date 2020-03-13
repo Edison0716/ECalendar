@@ -42,13 +42,10 @@ public class CalendarUtil {
      * @return 行数
      */
     static int getMaxLines(int dayOfMonthStartOffset, int totalDaysInMonth) {
-
-        Log.d("dayOfMonthStartOffset", dayOfMonthStartOffset + "");
-        Log.d("dayOfMonthStartOffset1", totalDaysInMonth + "");
-        //判断最大行数
-        if (8 - dayOfMonthStartOffset == 1 && totalDaysInMonth == 31) {
+        // 判断最大行数
+        if (7 - dayOfMonthStartOffset == 2 && totalDaysInMonth == 31) {
             return 6;
-        } else if (8 - dayOfMonthStartOffset == 0 && totalDaysInMonth >= 30) {
+        } else if (7 - dayOfMonthStartOffset == 1 && totalDaysInMonth >= 30) {
             return 6;
         } else {
             return 5;
@@ -263,7 +260,7 @@ public class CalendarUtil {
     }
 
 
-    static List<List<RangeCalendarEntity>> createDate(int year, int month, int range) {
+    public static List<List<RangeCalendarEntity>> createDate(int year, int month, int range) {
                 List<List<RangeCalendarEntity>> createDates = new ArrayList<>();
 
                 while (range > 0) {

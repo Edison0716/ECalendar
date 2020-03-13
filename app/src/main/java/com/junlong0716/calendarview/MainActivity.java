@@ -1,15 +1,8 @@
 package com.junlong0716.calendarview;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import androidx.appcompat.app.AppCompatActivity;
 import com.junlong0716.library.BaseCalendarEntity;
-import com.junlong0716.library.CalendarBaseView.OnCheckedListener;
-import com.junlong0716.library.style.EHiCalendarRangeStyleView;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements EHiCalendarRangeStyleView.OnCheckedListener{
 

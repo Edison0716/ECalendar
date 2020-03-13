@@ -1,8 +1,7 @@
-package com.junlong0716.library;
+package com.junlong0716.calendarview;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.icu.util.Calendar;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.junlong0716.library.style.EHiCalendarRangeStyleView;
-
+import com.junlong0716.library.BaseCalendarEntity;
+import com.junlong0716.library.CalendarBaseView.OnCheckedListener;
+import com.junlong0716.library.CalendarUtil;
+import com.junlong0716.library.RangeCalendarEntity;
+import com.junlong0716.library.RangeCalendarViewDelegate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public class CalendarRecyclerView extends RecyclerView {
         setBackgroundColor(Color.WHITE);
         setLayoutManager(new LinearLayoutManager(getContext()));
         mCalendarAdapter = new CalendarAdapter(getContext());
-        List<List<RangeCalendarEntity>> dates = CalendarUtil.createDate(2020, 2, 6);
+        List<List<RangeCalendarEntity>> dates = CalendarUtil.createDate(2020, 2, 1);
         setAdapter(mCalendarAdapter);
         RangeCalendarViewDelegate.setDates(dates);
         mCalendarAdapter.setData(dates);
@@ -77,7 +78,8 @@ public class CalendarRecyclerView extends RecyclerView {
         public void onBindViewHolder(@NonNull CalendarAdapterHolder holder, int position) {
             holder.mEHiCalendarRangeStyleView.setDate(mYearMonthList.get(position));
 
-            holder.mEHiCalendarRangeStyleView.setOnCheckedListener(new CalendarBaseView.OnCheckedListener() {
+
+            holder.mEHiCalendarRangeStyleView.setOnCheckedListener(new OnCheckedListener() {
                 @Override
                 public void onDaySelectedListener(BaseCalendarEntity item) {
                     notifyDataSetChanged();

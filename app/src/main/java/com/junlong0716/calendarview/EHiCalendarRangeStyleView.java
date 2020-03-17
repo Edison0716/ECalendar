@@ -8,9 +8,10 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import com.junlong0716.library.CalendarRangeView;
 import com.junlong0716.library.CalendarUtil;
-import com.junlong0716.library.RangeCalendarEntity;
+import com.junlong0716.library.range.CalendarRangeView;
+import com.junlong0716.library.range.RangeCalendarEntity;
+import java.util.List;
 
 /**
  * @ClassName: EHiCalendarRangeStyleView
@@ -135,6 +136,13 @@ public class EHiCalendarRangeStyleView extends CalendarRangeView {
             drawRect(canvas, item.getLocationX(), top, item.getLocationX() + halfWidth, bottom, R.color.calendar_ranged_color);
             drawCircle(rX, rY, r, canvas, R.color.calendar_checked_color);
         }
+    }
+
+    @Override
+    public void createCalendarStrategy(List<List<RangeCalendarEntity>> calendarDates) {
+        // 创建策略类
+        mICalendarStrategy = RangeCalendarViewStrategy.getInstance();
+        mICalendarStrategy.setListData(calendarDates);
     }
 
     /**

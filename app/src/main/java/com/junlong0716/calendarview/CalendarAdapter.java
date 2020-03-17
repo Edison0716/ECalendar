@@ -1,6 +1,7 @@
 package com.junlong0716.calendarview;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.junlong0716.calendarview.CalendarAdapter.CalendarAdapterHolder;
-import com.junlong0716.library.BaseCalendarEntity;
 import com.junlong0716.library.CalendarBaseView.OnCheckedListener;
-import com.junlong0716.library.RangeCalendarEntity;
+import com.junlong0716.library.range.RangeCalendarEntity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,11 +47,16 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapterHolder>
     @Override
     public void onBindViewHolder(@NonNull CalendarAdapterHolder holder, final int position) {
         holder.mEHiCalendarRangeStyleView.setDate(mYearMonthList.get(position));
+        holder.mEHiCalendarRangeStyleView.createCalendarStrategy(mYearMonthList);
         holder.mEHiCalendarRangeStyleView.setOnCheckedListener(new OnCheckedListener() {
             @Override
-            public void onDaySelectedListener(BaseCalendarEntity item) {
-                if (mDaySelectedCallback != null){
-                    mDaySelectedCallback.onDaySelectedListener();
+            public void onDaySelectedListener(List checkedDates) {
+                notifyDataSetChanged();
+
+                for (List<RangeCalendarEntity> rangeCalendarEntities : mYearMonthList) {
+                    for (RangeCalendarEntity rangeCalendarEntity : rangeCalendarEntities) {
+                        Log.d("IS_CHECKED", rangeCalendarEntity.isRangedCheckedDay() + "");
+                    }
                 }
             }
         });
@@ -62,11 +67,12 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapterHolder>
         return mYearMonthList.size();
     }
 
-    public interface DaySelectedCallback{
+    public interface DaySelectedCallback {
+
         void onDaySelectedListener();
     }
 
-    public static class CalendarAdapterHolder extends ViewHolder {
+    static class CalendarAdapterHolder extends ViewHolder {
 
         private EHiCalendarRangeStyleView mEHiCalendarRangeStyleView;
 

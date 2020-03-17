@@ -29,7 +29,7 @@ public abstract class CalendarBaseView extends View {
     // 不可用的日期画笔
     protected final Paint mUnavailableDateTextPaint = new Paint();
     // 选中的背景样式画笔
-    protected  final Paint mSelectedDateBgPaint = new Paint();
+    protected final Paint mSelectedDateBgPaint = new Paint();
     // 不是当月的画笔
     protected final Paint mOtherMonthTextPaint = new Paint();
     // 日期描述的画笔
@@ -55,6 +55,9 @@ public abstract class CalendarBaseView extends View {
     protected int mMonthDaysCount;
     // 一共有多少个格子  不是35个  就是 42 个
     protected int mTotalBlocksInMonth;
+    // 策略类
+    @Nullable
+    protected ICalendarStrategy mICalendarStrategy;
 
     @Nullable
     protected OnCheckedListener mOnCheckedListener;
@@ -95,18 +98,15 @@ public abstract class CalendarBaseView extends View {
         mUnavailableDateTextPaint.setTextAlign(Paint.Align.CENTER);
         mUnavailableDateTextPaint.setColor(Color.parseColor("#999999"));
 
-
         mSelectedDateBgPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
         mSelectedDateBgPaint.setAntiAlias(true);
         mSelectedDateBgPaint.setTextAlign(Paint.Align.CENTER);
         mSelectedDateBgPaint.setColor(Color.parseColor("#29B7B7"));
 
-
         mDesTextPaint.setTextSize(CalendarUtil.dipToPx(context, 12));
         mDesTextPaint.setAntiAlias(true);
         mDesTextPaint.setTextAlign(Paint.Align.CENTER);
         mDesTextPaint.setColor(Color.parseColor("#666666"));
-
     }
 
     public void setDate(@NonNull List<? extends BaseCalendarEntity> items) {
@@ -125,7 +125,6 @@ public abstract class CalendarBaseView extends View {
 
         calculateOffset();
         requestLayout();
-
     }
 
     /**
@@ -146,14 +145,15 @@ public abstract class CalendarBaseView extends View {
      * 获取日期数据
      */
     @Nullable
-    public List<? super BaseCalendarEntity> getDate(){
+    public List<? super BaseCalendarEntity> getDate() {
         return mItems;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        if (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED || heightMode == MeasureSpec.EXACTLY) {
+        if (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED
+                || heightMode == MeasureSpec.EXACTLY) {
             int realHeight = getPaddingTop() + getPaddingBottom() + mLineCount * mItemHeight;
             setMeasuredDimension(widthMeasureSpec, MeasureSpec.makeMeasureSpec(realHeight, MeasureSpec.EXACTLY));
             // 计算一个格子的宽度
@@ -167,7 +167,7 @@ public abstract class CalendarBaseView extends View {
     public void calculateOffset() {
         // 这里设置高度与宽度相等
         if (mItemHeight <= 0) {
-            mItemHeight = CalendarUtil.dipToPx(getContext(),60);
+            mItemHeight = CalendarUtil.dipToPx(getContext(), 60);
         } else {
             // EdisonLi TODO 2020/3/10 自定义Item高度
         }
@@ -177,7 +177,6 @@ public abstract class CalendarBaseView extends View {
         // 偏移量
         mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear, mMonth, mWeekStart);
         mLineCount = CalendarUtil.getMaxLines(mDayOfMonthStartOffset, mMonthDaysCount);
-
 
         mTotalBlocksInMonth = CalendarUtil.getTotalBlockInMonth(mLineCount);
     }
@@ -197,6 +196,6 @@ public abstract class CalendarBaseView extends View {
 
     public interface OnCheckedListener {
 
-        void onDaySelectedListener(BaseCalendarEntity item);
+        void onDaySelectedListener(List checkedDates);
     }
 }

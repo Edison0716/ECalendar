@@ -1,7 +1,5 @@
 package com.junlong0716.calendarview;
 
-import com.junlong0716.library.CalendarUtil;
-
 import org.junit.Test;
 
 import java.util.Calendar;

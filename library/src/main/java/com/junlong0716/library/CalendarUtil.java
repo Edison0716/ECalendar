@@ -2,7 +2,8 @@ package com.junlong0716.library;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import static com.junlong0716.library.CalendarRangeView.RANGE_CALENDAR_CLASS_NAME;
+import static com.junlong0716.library.range.CalendarRangeView.RANGE_CALENDAR_CLASS_NAME;
+import com.junlong0716.library.range.RangeCalendarEntity;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -14,8 +15,6 @@ import java.util.List;
  * @CreateDate: 2020/3/7 6:13 PM
  */
 public class CalendarUtil {
-
-    private static final Calendar CALENDAR = Calendar.getInstance();
 
     /**
      * dp转px
@@ -101,8 +100,9 @@ public class CalendarUtil {
      * @return 星期
      */
     public static int getWeekFormCalendar(int year, int month, int date) {
-        CALENDAR.set(year, month, date);
-        return CALENDAR.get(Calendar.DAY_OF_WEEK) - 1;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, date);
+        return calendar.get(Calendar.DAY_OF_WEEK) - 1;
     }
 
     /**
@@ -153,25 +153,28 @@ public class CalendarUtil {
      * @param month 月份
      */
     static boolean isCurrentMonth(int month) {
-        return CALENDAR.get(Calendar.MONTH) == month;
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.MONTH) == month;
     }
 
     static boolean isToday(int year, int month, int day) {
-        return CALENDAR.get(Calendar.YEAR) == year && CALENDAR.get(Calendar.MONTH) == month
-                && CALENDAR.get(Calendar.DATE) == day;
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.YEAR) == year && calendar.get(Calendar.MONTH) == month
+                && calendar.get(Calendar.DATE) == day;
     }
 
     static boolean isPass(int year, int month, int day) {
-        if (year < CALENDAR.get(Calendar.YEAR)) {
+        Calendar calendar = Calendar.getInstance();
+        if (year < calendar.get(Calendar.YEAR)) {
             return true;
-        } else if (year > CALENDAR.get(Calendar.YEAR)) {
+        } else if (year > calendar.get(Calendar.YEAR)) {
             return false;
-        } else if (month < CALENDAR.get(Calendar.MONTH)) {
+        } else if (month < calendar.get(Calendar.MONTH)) {
             return true;
-        } else if (month > CALENDAR.get(Calendar.MONTH)) {
+        } else if (month > calendar.get(Calendar.MONTH)) {
             return false;
         } else {
-            return day < CALENDAR.get(Calendar.DATE);
+            return day < calendar.get(Calendar.DATE);
         }
     }
 
@@ -182,7 +185,7 @@ public class CalendarUtil {
      * @param compared  被比较日期
      * @return 被比较日期 是不是在 基准日期 之前
      */
-    static boolean isPass(BaseCalendarEntity reference, BaseCalendarEntity compared) {
+    public static boolean isPass(BaseCalendarEntity reference, BaseCalendarEntity compared) {
         Calendar referenceC = Calendar.getInstance();
         referenceC.set(Calendar.YEAR, reference.getYear());
         referenceC.set(Calendar.MONTH, reference.getMonth());
@@ -277,7 +280,7 @@ public class CalendarUtil {
 
             range--;
         }
-        RangeCalendarViewDelegate.setDates(createDates);
+
         return createDates;
     }
 }

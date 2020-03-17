@@ -1,12 +1,13 @@
-package com.junlong0716.library;
+package com.junlong0716.library.range;
 
+import com.junlong0716.library.BaseCalendarEntity;
 import java.io.Serializable;
 
 /**
  * @ClassName: Calendar
  * @Description: 日期 实体类
- * @Author: LiJunlong
- * @CreateDate: 2020/3/8 11:40 AM
+ * @author : LiJunlong
+ * @since : 2020/3/8 11:40 AM
  */
 public class RangeCalendarEntity extends BaseCalendarEntity implements Serializable {
 

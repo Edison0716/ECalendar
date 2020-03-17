@@ -1,11 +1,14 @@
-package com.junlong0716.library;
+package com.junlong0716.library.range;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
 import androidx.annotation.Nullable;
+import com.junlong0716.library.CalendarBaseView;
+import com.junlong0716.library.ICalendarView;
 
 /**
  * @ClassName: CalendarView
@@ -102,8 +105,11 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
                 if (item instanceof RangeCalendarEntity) {
                     if (((RangeCalendarEntity) item).getDay() == mCheckedDay) {
                         if (((RangeCalendarEntity) item).isAvailable()) {
-                            RangeCalendarViewDelegate.handleClick((RangeCalendarEntity) item);
-                            mOnCheckedListener.onDaySelectedListener((RangeCalendarEntity) item);
+                            if (mICalendarStrategy != null){
+                                Toast.makeText(getContext(),"ok",Toast.LENGTH_SHORT).show();
+                                mICalendarStrategy.handleClick(item);
+                                mOnCheckedListener.onDaySelectedListener(mICalendarStrategy.getCheckedDates());
+                            }
                         }
                         invalidate();
                         break;
@@ -115,7 +121,6 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
 
     public void onActionDown(float x, float y) {
         mCheckedDay = calculateDateByLocation(x, y);
-        Log.d("checked", mCheckedDay + "");
     }
 
     private int calculateDateByLocation(float x, float y) {

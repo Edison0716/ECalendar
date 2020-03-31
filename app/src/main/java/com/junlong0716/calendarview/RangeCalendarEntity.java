@@ -1,4 +1,4 @@
-package com.junlong0716.library.range;
+package com.junlong0716.calendarview;
 
 import com.junlong0716.library.BaseCalendarEntity;
 import java.io.Serializable;

@@ -8,7 +8,7 @@ import java.util.List;
  * @since 2020/03/16 15:20
  * desc : 
  */
-public interface ICalendarStrategy<T> {
+public interface ICalendarStrategy<T extends BaseCalendarEntity> {
     /**
      * @param clickEntity 点击的日期
      */

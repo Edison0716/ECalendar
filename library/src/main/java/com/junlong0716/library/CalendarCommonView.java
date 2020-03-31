@@ -1,14 +1,10 @@
-package com.junlong0716.library.range;
+package com.junlong0716.library;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
-import com.junlong0716.library.CalendarBaseView;
-import com.junlong0716.library.ICalendarView;
 
 /**
  * @ClassName: CalendarView
@@ -16,21 +12,21 @@ import com.junlong0716.library.ICalendarView;
  * @Author: LiJunlong
  * @CreateDate: 2020/3/7 6:56 PM
  */
-public abstract class CalendarRangeView extends CalendarBaseView implements ICalendarView {
+public abstract class CalendarCommonView<T extends BaseCalendarEntity> extends CalendarBaseView implements ICalendarView<T> {
 
-    public static final String RANGE_CALENDAR_CLASS_NAME = CalendarRangeView.class.getName();
+    public static final String RANGE_CALENDAR_CLASS_NAME = CalendarCommonView.class.getName();
 
     private int mCheckedDay;
 
-    public CalendarRangeView(Context context) {
+    public CalendarCommonView(Context context) {
         this(context, null);
     }
 
-    public CalendarRangeView(Context context, @Nullable AttributeSet attrs) {
+    public CalendarCommonView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CalendarRangeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public CalendarCommonView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -63,8 +59,7 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
                 int x = rowIndex * mItemWidth;
                 int y = lineIndex * mItemHeight;
 
-                Log.d("width",mItemWidth + "");
-                RangeCalendarEntity item = (RangeCalendarEntity) mItems.get(indexItem);
+                T item = (T) mItems.get(indexItem);
 
                 // 记录一下每一个item 可绘制区域
                 item.setLocationX(x);
@@ -102,12 +97,10 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
     private void handleClick() {
         if (mOnCheckedListener != null) {
             for (Object item : mItems) {
-                if (item instanceof RangeCalendarEntity) {
-                    if (((RangeCalendarEntity) item).getDay() == mCheckedDay) {
-                        if (((RangeCalendarEntity) item).isAvailable()) {
+                    if (((BaseCalendarEntity) item).getDay() == mCheckedDay) {
+                        if (((BaseCalendarEntity) item).isAvailable()) {
                             if (mICalendarStrategy != null){
-                                Toast.makeText(getContext(),"ok",Toast.LENGTH_SHORT).show();
-                                mICalendarStrategy.handleClick(item);
+                                mICalendarStrategy.handleClick((BaseCalendarEntity) item);
                                 mOnCheckedListener.onDaySelectedListener(mICalendarStrategy.getCheckedDates());
                             }
                         }
@@ -116,7 +109,6 @@ public abstract class CalendarRangeView extends CalendarBaseView implements ICal
                     }
                 }
             }
-        }
     }
 
     public void onActionDown(float x, float y) {

@@ -39,7 +39,7 @@ public class BaseCalendarEntity implements Serializable {
         this.isToday = CalendarUtil.isToday(year, month, day);
         this.isAvailable = !CalendarUtil.isPass(year, month, day);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
+        calendar.set(year, month, day,0,0,0);
         this.timeStamp = calendar.getTimeInMillis();
     }
 

@@ -1,7 +1,6 @@
 package com.junlong0716.calendarview;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.junlong0716.calendarview.CalendarAdapter.CalendarAdapterHolder;
 import com.junlong0716.library.CalendarBaseView.OnCheckedListener;
-import com.junlong0716.library.range.RangeCalendarEntity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,12 +50,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapterHolder>
             @Override
             public void onDaySelectedListener(List checkedDates) {
                 notifyDataSetChanged();
-
-                for (List<RangeCalendarEntity> rangeCalendarEntities : mYearMonthList) {
-                    for (RangeCalendarEntity rangeCalendarEntity : rangeCalendarEntities) {
-                        Log.d("IS_CHECKED", rangeCalendarEntity.isRangedCheckedDay() + "");
-                    }
-                }
             }
         });
     }
@@ -74,7 +66,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapterHolder>
 
     static class CalendarAdapterHolder extends ViewHolder {
 
-        private EHiCalendarRangeStyleView mEHiCalendarRangeStyleView;
+        private EHiRangeCalendarView mEHiCalendarRangeStyleView;
 
         CalendarAdapterHolder(@NonNull View itemView) {
             super(itemView);

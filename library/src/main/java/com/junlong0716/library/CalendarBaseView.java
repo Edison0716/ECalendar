@@ -135,7 +135,7 @@ public abstract class CalendarBaseView extends View {
     public void setDate(int year, int month, Class clazz) {
         mYear = year;
         mMonth = month;
-        CalendarUtil.createDate(mYear, mMonth, mItems, clazz);
+        CalendarUtil.createDate(mYear, mMonth, mItems);
         mIsCurrentMonth = CalendarUtil.isCurrentMonth(mMonth);
         calculateOffset();
         requestLayout();

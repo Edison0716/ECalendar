@@ -2,10 +2,8 @@ package com.junlong0716.library;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import static com.junlong0716.library.range.CalendarRangeView.RANGE_CALENDAR_CLASS_NAME;
-import com.junlong0716.library.range.RangeCalendarEntity;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -200,49 +198,14 @@ public class CalendarUtil {
     }
 
     static List<? super BaseCalendarEntity> createDate(int year, int month,
-            @NonNull List<? super BaseCalendarEntity> items, @NonNull Class clazz) {
+            @NonNull List<? super BaseCalendarEntity> items) {
         items.clear();
         if (checkInvalidateMonth(month)) {
             throw new IllegalArgumentException("非法月份!");
         }
         for (int i = 0; i < CalendarUtil.getMonthDaysCount(year, month); i++) {
-            while (clazz != null) {
-                if (clazz.getName().equals(RANGE_CALENDAR_CLASS_NAME)) {
-                    RangeCalendarEntity rangeCalendarEntity = new RangeCalendarEntity(year, month, i + 1);
-                    items.add(rangeCalendarEntity);
-                    break;
-                } else {
-                    clazz = clazz.getSuperclass();
-                }
-            }
-        }
-        return items;
-    }
-
-    static List<? extends BaseCalendarEntity> checkedRangeStartDate(int day,
-            @NonNull List<? extends BaseCalendarEntity> items) {
-        for (Object item : items) {
-            if (item instanceof RangeCalendarEntity) {
-                if (((RangeCalendarEntity) item).getDay() == day) {
-                    ((RangeCalendarEntity) item).setStartCheckedDay(true);
-                } else {
-                    ((RangeCalendarEntity) item).setStartCheckedDay(false);
-                }
-            }
-        }
-        return items;
-    }
-
-    static List<? extends BaseCalendarEntity> checkedRangeEndDate(int day,
-            @NonNull List<? extends BaseCalendarEntity> items) {
-        for (Object item : items) {
-            if (item instanceof RangeCalendarEntity) {
-                if (((RangeCalendarEntity) item).getDay() == day) {
-                    ((RangeCalendarEntity) item).setEndCheckedDay(true);
-                } else {
-                    ((RangeCalendarEntity) item).setEndCheckedDay(false);
-                }
-            }
+            BaseCalendarEntity rangeCalendarEntity = new BaseCalendarEntity(year, month, i + 1);
+            items.add(rangeCalendarEntity);
         }
         return items;
     }
@@ -253,34 +216,25 @@ public class CalendarUtil {
      * @param m 月份 使用Calendar 包的
      * @return 结果
      */
-    static boolean checkInvalidateMonth(int m) {
+    private static boolean checkInvalidateMonth(int m) {
         return m < 0 || m >= 12;
     }
 
-    public static List<List<RangeCalendarEntity>> createDate(int year, int month, int range) {
-        List<List<RangeCalendarEntity>> createDates = new ArrayList<>();
+    public static Date timeStamp2Date(long timeStamp) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeStamp);
+        return calendar.getTime();
+    }
 
-        while (range > 0) {
-            int monthCount = getMonthDaysCount(year, month);
-            List<RangeCalendarEntity> monthDates = new ArrayList<>(monthCount);
+    public static long Date2TimeStamp(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day,0,0,0);
+        return calendar.getTimeInMillis();
+    }
 
-            for (int i = 0; i < monthCount; ++i) {
-                monthDates.add(new RangeCalendarEntity(year, month, i + 1));
-            }
-
-            createDates.add(monthDates);
-
-            // 跨年
-            if (month == Calendar.DECEMBER) {
-                year++;
-                month = Calendar.JANUARY;
-            } else {
-                month++;
-            }
-
-            range--;
-        }
-
-        return createDates;
+    public static long Date2TimeStamp(int year, int month, int day, int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day, hour, minute);
+        return calendar.getTimeInMillis();
     }
 }

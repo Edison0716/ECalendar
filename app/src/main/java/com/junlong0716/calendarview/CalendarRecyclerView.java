@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.junlong0716.library.CalendarUtil;
-import com.junlong0716.library.range.RangeCalendarEntity;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -38,7 +38,12 @@ public class CalendarRecyclerView extends RecyclerView implements CalendarAdapte
         setBackgroundColor(Color.WHITE);
         setLayoutManager(new LinearLayoutManager(getContext()));
         mCalendarAdapter = new CalendarAdapter(getContext(), this);
-        List<List<RangeCalendarEntity>> dates = CalendarUtil.createDate(2020, 2, 1);
+
+            long startTimeStamp = CalendarUtil.Date2TimeStamp(2020, Calendar.MONTH, 11);
+            long endTimeStamp = CalendarUtil.Date2TimeStamp(2020, Calendar.MONTH, 21);
+
+        List<List<RangeCalendarEntity>> date = Utils.createDate(2020, Calendar.MARCH, 1);
+        List<List<RangeCalendarEntity>> dates = Utils.createRangeDate(startTimeStamp, endTimeStamp, 6);
         setAdapter(mCalendarAdapter);
         mCalendarAdapter.setData(dates);
         setHasFixedSize(true);
@@ -52,6 +57,7 @@ public class CalendarRecyclerView extends RecyclerView implements CalendarAdapte
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-
+        // 日历策略数据重置
+        CalendarStrategyFactory.getInstance().getICalendarStrategy().reset();
     }
 }

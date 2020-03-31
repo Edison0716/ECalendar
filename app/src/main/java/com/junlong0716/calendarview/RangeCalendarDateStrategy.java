@@ -3,7 +3,6 @@ package com.junlong0716.calendarview;
 import androidx.annotation.NonNull;
 import com.junlong0716.library.CalendarUtil;
 import com.junlong0716.library.ICalendarStrategy;
-import com.junlong0716.library.range.RangeCalendarEntity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,7 @@ import java.util.List;
  * @Author: LiJunlong
  * @CreateDate: 2020/3/8 10:38 AM
  */
-public final class RangeCalendarViewStrategy implements ICalendarStrategy<RangeCalendarEntity> {
+public final class RangeCalendarDateStrategy implements ICalendarStrategy<RangeCalendarEntity> {
 
     // 第一次点击
     private boolean FIRST_CLICK = false;
@@ -23,22 +22,23 @@ public final class RangeCalendarViewStrategy implements ICalendarStrategy<RangeC
     private RangeCalendarEntity FIRST_CLICK_CALENDAR_ENTITY = null;
     // 第二次点击记录的日期实体
     private RangeCalendarEntity SECOND_CLICK_CALENDAR_ENTITY = null;
+    @NonNull
     private List<List<RangeCalendarEntity>> mCalendarDates;
     // 单例
-    private static volatile RangeCalendarViewStrategy STRATEGY = null;
+    private static volatile RangeCalendarDateStrategy STRATEGY = null;
 
-    public static RangeCalendarViewStrategy getInstance() {
+    static RangeCalendarDateStrategy getInstance() {
         if (STRATEGY == null) {
-            synchronized (RangeCalendarViewStrategy.class) {
+            synchronized (RangeCalendarDateStrategy.class) {
                 if (STRATEGY == null) {
-                    STRATEGY = new RangeCalendarViewStrategy();
+                    STRATEGY = new RangeCalendarDateStrategy();
                 }
             }
         }
         return STRATEGY;
     }
 
-    private RangeCalendarViewStrategy() {
+    private RangeCalendarDateStrategy() {
 
     }
 
@@ -47,8 +47,9 @@ public final class RangeCalendarViewStrategy implements ICalendarStrategy<RangeC
      * @param clickEntity 选中的日期
      */
     public void handleClick(RangeCalendarEntity clickEntity) {
-
         if (!FIRST_CLICK) {
+            // 第一次点击重置一下 否则 续期没有清空数组
+            reset();
             // 第一次点击
             FIRST_CLICK = true;
             clickEntity.setStartCheckedDay(true);
@@ -70,7 +71,6 @@ public final class RangeCalendarViewStrategy implements ICalendarStrategy<RangeC
             // 继续走一遍
             handleClick(clickEntity);
         }
-
         handleRange();
     }
 

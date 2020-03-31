@@ -8,9 +8,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import com.junlong0716.library.CalendarCommonView;
 import com.junlong0716.library.CalendarUtil;
-import com.junlong0716.library.range.CalendarRangeView;
-import com.junlong0716.library.range.RangeCalendarEntity;
 import java.util.List;
 
 /**
@@ -19,17 +18,17 @@ import java.util.List;
  * @Author: LiJunlong
  * @CreateDate: 2020/3/8 4:24 PM
  */
-public class EHiCalendarRangeStyleView extends CalendarRangeView {
+public class EHiRangeCalendarView extends CalendarCommonView<RangeCalendarEntity> {
 
-    public EHiCalendarRangeStyleView(Context context) {
+    public EHiRangeCalendarView(Context context) {
         super(context);
     }
 
-    public EHiCalendarRangeStyleView(Context context, @Nullable AttributeSet attrs) {
+    public EHiRangeCalendarView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public EHiCalendarRangeStyleView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EHiRangeCalendarView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -65,7 +64,7 @@ public class EHiCalendarRangeStyleView extends CalendarRangeView {
         int marginTop = 10;
         // 圆距离顶部的距离
         int paddingTop = (mItemHeight - CalendarUtil.dipToPx(getContext(), 32)) / 2;
-        int desPointY = mItemHeight + item.getLocationY();
+        int desPointY = mItemHeight + item.getLocationY() - CalendarUtil.dipToPx(getContext(),3);
         // 绘制描述文字
         if (!TextUtils.isEmpty(item.getDes()) && !item.isStartCheckedDay() && !item.isEndCheckedDay()) {
             canvas.drawText(item.getDes(), centerX, desPointY, mDesTextPaint);
@@ -141,7 +140,7 @@ public class EHiCalendarRangeStyleView extends CalendarRangeView {
     @Override
     public void createCalendarStrategy(List<List<RangeCalendarEntity>> calendarDates) {
         // 创建策略类
-        mICalendarStrategy = RangeCalendarViewStrategy.getInstance();
+        mICalendarStrategy = CalendarStrategyFactory.getInstance().createStrategy(false);
         mICalendarStrategy.setListData(calendarDates);
     }
 

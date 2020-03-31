@@ -14,6 +14,6 @@ public class Main2Activity extends AppCompatActivity {
     }
 
     public void turn(View view) {
-        startActivity(new Intent(this,MainActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

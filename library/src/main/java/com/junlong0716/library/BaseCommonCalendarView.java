@@ -12,21 +12,21 @@ import androidx.annotation.Nullable;
  * @Author: LiJunlong
  * @CreateDate: 2020/3/7 6:56 PM
  */
-public abstract class CalendarCommonView<T extends BaseCalendarEntity> extends CalendarBaseView implements ICalendarView<T> {
+public abstract class BaseCommonCalendarView<T extends BaseCalendarEntity> extends BaseCalendarView implements ICalendarView<T> {
 
-    public static final String RANGE_CALENDAR_CLASS_NAME = CalendarCommonView.class.getName();
+    public static final String RANGE_CALENDAR_CLASS_NAME = BaseCommonCalendarView.class.getName();
 
     private int mCheckedDay;
 
-    public CalendarCommonView(Context context) {
+    public BaseCommonCalendarView(Context context) {
         this(context, null);
     }
 
-    public CalendarCommonView(Context context, @Nullable AttributeSet attrs) {
+    public BaseCommonCalendarView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CalendarCommonView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public BaseCommonCalendarView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

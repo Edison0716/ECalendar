@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import com.junlong0716.library.CalendarCommonView;
+import com.junlong0716.library.BaseCommonCalendarView;
 import com.junlong0716.library.CalendarUtil;
 import java.util.List;
 
@@ -18,17 +18,17 @@ import java.util.List;
  * @Author: LiJunlong
  * @CreateDate: 2020/3/8 4:24 PM
  */
-public class EHiRangeCalendarView extends CalendarCommonView<RangeCalendarEntity> {
+public class EHiRangeBaseCalendarView extends BaseCommonCalendarView<RangeCalendarEntity> {
 
-    public EHiRangeCalendarView(Context context) {
+    public EHiRangeBaseCalendarView(Context context) {
         super(context);
     }
 
-    public EHiRangeCalendarView(Context context, @Nullable AttributeSet attrs) {
+    public EHiRangeBaseCalendarView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public EHiRangeCalendarView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EHiRangeBaseCalendarView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

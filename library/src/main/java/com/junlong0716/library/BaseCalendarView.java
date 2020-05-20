@@ -17,7 +17,7 @@ import java.util.List;
  * @Author: LiJunlong
  * @CreateDate: 2020/3/8 10:41 AM
  */
-public abstract class CalendarBaseView extends View {
+public abstract class BaseCalendarView extends View {
 
     public static final int DAYS_COUNT_IN_WEEK = 7;
     // 默认颜色值
@@ -34,48 +34,76 @@ public abstract class CalendarBaseView extends View {
     protected final Paint mOtherMonthTextPaint = new Paint();
     // 日期描述的画笔
     protected final Paint mDesTextPaint = new Paint();
-    // 日历数据
+
+    /**
+     *  日历数据
+     */
     protected final List<? super BaseCalendarEntity> mItems = new ArrayList<>(31);
-    // 每一项日期的宽度 高度
+    /**
+     * 每一项日期的宽度 高度
+     */
     protected int mItemWidth;
-    // 默认 高度 等于 宽度 一个正方形
+    /**
+     * 默认 高度 等于 宽度 一个正方形
+     */
     protected int mItemHeight = -1;
-    // 一个月份总共的行数  不是5行 就是6行 因为有日期偏移格子
+    /**
+     *  一个月份总共的行数  不是5行 就是6行 因为有日期偏移格子
+     */
     protected int mLineCount;
-    // 设置当前日历显示的年 月
+    /**
+     * 设置当前日历显示的年 月
+     */
     protected int mYear;
     protected int mMonth;
-    // 从周几开始计算起始点
+    protected int mDay;
+    /**
+     * 从周几开始计算起始点
+     */
     protected int mWeekStart = java.util.Calendar.SUNDAY;
-    // 是否是当前的月份
+    /**
+     * 是否是当前的月份
+     */
     protected boolean mIsCurrentMonth = false;
-    // 计算偏移量
+    /**
+     * 计算偏移量
+     */
     protected int mDayOfMonthStartOffset;
-    // 该月一共有多少天
+    /**
+     * 该月一共有多少天
+     */
     protected int mMonthDaysCount;
-    // 一共有多少个格子  不是35个  就是 42 个
+    /**
+     * 一共有多少个格子  不是35个  就是 42 个
+     */
     protected int mTotalBlocksInMonth;
-    // 策略类
+
+    /**
+     * 策略类
+     */
     @Nullable
     protected ICalendarStrategy mICalendarStrategy;
 
     @Nullable
     protected OnCheckedListener mOnCheckedListener;
 
-    public CalendarBaseView(Context context) {
+    public BaseCalendarView(Context context) {
         this(context, null);
     }
 
-    public CalendarBaseView(Context context, @Nullable AttributeSet attrs) {
+    public BaseCalendarView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CalendarBaseView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public BaseCalendarView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initPaint(context);
     }
 
-    // 初始化 画笔
+    /**
+     * 初始化 画笔
+     * @param context 上下文
+     */
     private void initPaint(Context context) {
 
         mUnselectedDateTextPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
@@ -113,16 +141,16 @@ public abstract class CalendarBaseView extends View {
         if (items.isEmpty()) {
             return;
         }
-
         int year = items.get(0).getYear();
         int month = items.get(0).getMonth();
+        int day = items.get(0).getDay();
 
         mIsCurrentMonth = CalendarUtil.isCurrentMonth(month);
         mYear = year;
         mMonth = month;
+        mDay = day;
         mItems.clear();
         mItems.addAll(items);
-
         calculateOffset();
         requestLayout();
     }
@@ -152,8 +180,7 @@ public abstract class CalendarBaseView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        if (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED
-                || heightMode == MeasureSpec.EXACTLY) {
+        if (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED || heightMode == MeasureSpec.EXACTLY) {
             int realHeight = getPaddingTop() + getPaddingBottom() + mLineCount * mItemHeight;
             setMeasuredDimension(widthMeasureSpec, MeasureSpec.makeMeasureSpec(realHeight, MeasureSpec.EXACTLY));
             // 计算一个格子的宽度
@@ -165,20 +192,25 @@ public abstract class CalendarBaseView extends View {
      * 计算偏移量
      */
     public void calculateOffset() {
+        if (mItems.isEmpty()){
+            return;
+        }
         // 这里设置高度与宽度相等
         if (mItemHeight <= 0) {
             mItemHeight = CalendarUtil.dipToPx(getContext(), 60);
         } else {
             // EdisonLi TODO 2020/3/10 自定义Item高度
         }
-
         mMonthDaysCount = CalendarUtil.getMonthDaysCount(mYear, mMonth);
-
         // 偏移量
-        mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear, mMonth, mWeekStart);
+        mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear, mMonth, mDay, mWeekStart);
         mLineCount = CalendarUtil.getMaxLines(mDayOfMonthStartOffset, mMonthDaysCount);
-
         mTotalBlocksInMonth = CalendarUtil.getTotalBlockInMonth(mLineCount);
+
+        int lineIndex = (mDay) / 7;
+        mMonthDaysCount = mMonthDaysCount - mDay + 1;
+        // 一共得行数
+        mLineCount = mLineCount - lineIndex;
     }
 
     @Override

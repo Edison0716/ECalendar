@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.junlong0716.calendarview.CalendarAdapter.CalendarAdapterHolder;
-import com.junlong0716.library.CalendarBaseView.OnCheckedListener;
+import com.junlong0716.library.BaseCalendarView.OnCheckedListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapterHolder>
 
     static class CalendarAdapterHolder extends ViewHolder {
 
-        private EHiRangeCalendarView mEHiCalendarRangeStyleView;
+        private EHiRangeBaseCalendarView mEHiCalendarRangeStyleView;
 
         CalendarAdapterHolder(@NonNull View itemView) {
             super(itemView);

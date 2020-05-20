@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.junlong0716.library.CalendarUtil;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -45,6 +46,16 @@ public class CalendarRecyclerView extends RecyclerView implements CalendarAdapte
         List<List<RangeCalendarEntity>> date = Utils.createDate(2020, Calendar.MARCH, 1);
         List<List<RangeCalendarEntity>> dates = Utils.createRangeDate(startTimeStamp, endTimeStamp, 6);
         setAdapter(mCalendarAdapter);
+
+//        for (List<RangeCalendarEntity> oneMonthDate : dates) {
+//            Iterator<RangeCalendarEntity> inter = oneMonthDate.iterator();
+//            while (inter.hasNext()) {
+//                if (!inter.next().isAvailable()) {
+//                    inter.remove();
+//                }
+//            }
+//        }
+
         mCalendarAdapter.setData(dates);
         setHasFixedSize(true);
     }

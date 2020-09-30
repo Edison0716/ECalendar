@@ -11,25 +11,41 @@ import java.util.Calendar;
  */
 public class BaseCalendarEntity implements Serializable {
 
-    // 年
+    /**
+     * 年
+     */
     private int year;
-    // 月
+
+    /**
+     * 月
+     */
     private int month;
-    // 日
+
+    /**
+     * 日
+     */
     private int day;
 
-    // 是否是今天
+    /**
+     * 是否是今天
+     */
     private boolean isToday;
 
-    // 绘制时的坐标
+    /**
+     * 绘制时的坐标
+     */
     private int locationX;
 
     private int locationY;
 
-    // 是否是可用的
+    /**
+     * 是否是可用的
+     */
     private boolean isAvailable;
 
-    // 时间戳
+    /**
+     * 时间戳
+     */
     private long timeStamp;
 
     public BaseCalendarEntity(int year, int month, int day) {

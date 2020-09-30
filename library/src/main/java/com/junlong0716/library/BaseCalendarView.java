@@ -1,6 +1,7 @@
 package com.junlong0716.library;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -97,14 +98,23 @@ public abstract class BaseCalendarView extends View {
 
     public BaseCalendarView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initPaint(context);
+        initPaint(context, attrs);
     }
 
     /**
      * 初始化 画笔
      * @param context 上下文
+     * @param attrs
      */
-    private void initPaint(Context context) {
+    private void initPaint(Context context, AttributeSet attrs) {
+
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BaseCalendarView);
+
+        try {
+            mItemHeight = (int) typedArray.getDimension(R.styleable.BaseCalendarView_date_height,-1f);
+        } finally {
+            typedArray.recycle();
+        }
 
         mUnselectedDateTextPaint.setTextSize(CalendarUtil.dipToPx(context, DEFAULT_TEXT_SIZE));
         mUnselectedDateTextPaint.setAntiAlias(true);
@@ -180,7 +190,8 @@ public abstract class BaseCalendarView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        if (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED || heightMode == MeasureSpec.EXACTLY) {
+        if (heightMode == MeasureSpec.AT_MOST || heightMode == MeasureSpec.UNSPECIFIED
+                || heightMode == MeasureSpec.EXACTLY) {
             int realHeight = getPaddingTop() + getPaddingBottom() + mLineCount * mItemHeight;
             setMeasuredDimension(widthMeasureSpec, MeasureSpec.makeMeasureSpec(realHeight, MeasureSpec.EXACTLY));
             // 计算一个格子的宽度
@@ -192,25 +203,40 @@ public abstract class BaseCalendarView extends View {
      * 计算偏移量
      */
     public void calculateOffset() {
-        if (mItems.isEmpty()){
+        if (mItems.isEmpty()) {
             return;
         }
         // 这里设置高度与宽度相等
         if (mItemHeight <= 0) {
             mItemHeight = CalendarUtil.dipToPx(getContext(), 60);
-        } else {
-            // EdisonLi TODO 2020/3/10 自定义Item高度
         }
         mMonthDaysCount = CalendarUtil.getMonthDaysCount(mYear, mMonth);
         // 偏移量
         mDayOfMonthStartOffset = CalendarUtil.getDayOfMonthStartOffset(mYear, mMonth, mDay, mWeekStart);
         mLineCount = CalendarUtil.getMaxLines(mDayOfMonthStartOffset, mMonthDaysCount);
         mTotalBlocksInMonth = CalendarUtil.getTotalBlockInMonth(mLineCount);
+        // 残月
+        if (mItems.size() != mMonthDaysCount) {
+            // 一个月的总计时间 减去当前的日期
+            mMonthDaysCount = mMonthDaysCount - mDay + 1;
+            // 取整获取多少行
+            int lineIndex = (mMonthDaysCount + mDayOfMonthStartOffset) / DAYS_COUNT_IN_WEEK;
+            // 有余数直接加一行
+            if ((mMonthDaysCount + mDayOfMonthStartOffset) % DAYS_COUNT_IN_WEEK > 0) {
+                lineIndex += 1;
+            }
+            // 一共得行数
+            mLineCount = lineIndex;
+        }
+    }
 
-        int lineIndex = (mDay) / 7;
-        mMonthDaysCount = mMonthDaysCount - mDay + 1;
-        // 一共得行数
-        mLineCount = mLineCount - lineIndex;
+    /**
+     * 设置日期高度
+     * @param dateHeight 每一个的日期的高度
+     */
+    public void setDateHeight(int dateHeight){
+        mItemHeight = CalendarUtil.dipToPx(getContext(), dateHeight);
+        requestLayout();
     }
 
     @Override

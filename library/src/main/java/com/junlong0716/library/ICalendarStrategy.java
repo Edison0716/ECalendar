@@ -10,16 +10,20 @@ import java.util.List;
  */
 public interface ICalendarStrategy<T extends BaseCalendarEntity> {
     /**
+     * 点击策略
      * @param clickEntity 点击的日期
      */
     void handleClick(T clickEntity);
 
     /**
      * 返回选中的那个日期
+     * @return 选中得数据
      */
     List<T> getCheckedDates();
 
-
+    /**
+     * 重置
+     */
     void reset();
 
     /**

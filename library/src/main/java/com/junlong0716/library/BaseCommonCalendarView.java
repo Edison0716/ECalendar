@@ -12,7 +12,8 @@ import androidx.annotation.Nullable;
  * @Author: LiJunlong
  * @CreateDate: 2020/3/7 6:56 PM
  */
-public abstract class BaseCommonCalendarView<T extends BaseCalendarEntity> extends BaseCalendarView implements ICalendarView<T> {
+public abstract class BaseCommonCalendarView<T extends BaseCalendarEntity> extends BaseCalendarView
+        implements ICalendarView<T> {
 
     public static final String RANGE_CALENDAR_CLASS_NAME = BaseCommonCalendarView.class.getName();
 

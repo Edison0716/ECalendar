@@ -1,7 +1,7 @@
 # ECalendar
 日历控件
 ## ScreenShot
-<img src="https://github.com/Edison0716/ECalendar/blob/master/Snapshot.png" width="600" height="1090" alt="范围选择"/><br/>
+<img src="https://github.com/Edison0716/ECalendar/blob/master/Snapshot.png" width="300" height="600" alt="范围选择"/><br/>
 
 
 ```

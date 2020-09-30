@@ -84,7 +84,7 @@ public class EHiRangeBaseCalendarView extends BaseCommonCalendarView<RangeCalend
     }
 
     @Override
-    public void drawDaySelected(Canvas canvas, RangeCalendarEntity item) {
+    public void drawDayBackground(Canvas canvas, RangeCalendarEntity item) {
 
         int halfWidth = mItemWidth / 2;
         int halfHeight = mItemHeight / 2;

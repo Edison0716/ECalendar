@@ -67,7 +67,7 @@ public abstract class BaseCommonCalendarView<T extends BaseCalendarEntity> exten
                 item.setLocationY(y);
 
                 // 绘制背景
-                drawDaySelected(canvas, item);
+                drawDayBackground(canvas, item);
 
                 // 绘制单元块
                 drawDayText(canvas, item);

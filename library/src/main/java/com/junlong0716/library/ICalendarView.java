@@ -23,7 +23,7 @@ public interface ICalendarView<T extends BaseCalendarEntity> {
      * @param canvas 画板
      * @param item 数据
      */
-    void drawDaySelected(Canvas canvas, T item);
+    void drawDayBackground(Canvas canvas, T item);
 
 
     /**

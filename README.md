@@ -1,5 +1,8 @@
 # ECalendar
 日历控件
+## ScreenShot
+![范围选择](https://github.com/Edison0716/ECalendar/blob/master/Snapshot.png) 
+
 
 ```
 allprojects {

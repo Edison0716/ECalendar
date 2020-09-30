@@ -46,6 +46,7 @@ public final class RangeCalendarDateStrategy implements ICalendarStrategy<RangeC
      * 处理点击事件
      * @param clickEntity 选中的日期
      */
+    @Override
     public void handleClick(RangeCalendarEntity clickEntity) {
         if (!FIRST_CLICK) {
             // 第一次点击重置一下 否则 续期没有清空数组
